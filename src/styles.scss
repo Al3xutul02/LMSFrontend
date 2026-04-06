@@ -1,0 +1,73 @@
+@use "themes.scss";
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--primary-bg-color);
+  color: var(--primary-text-color);
+  transition: background-color 0.3s ease;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.2s;
+
+  &:hover {
+    color: color-mix(in srgb, var(--accent), white 20%);;
+    text-decoration: underline;
+  }
+}
+
+// Global Utility for Cards
+.card {
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  padding: 1.5rem;
+}
+
+.action-btn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &.primary {
+    background: var(--accent);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--accent), transparent 70%);
+    
+    &:hover:not(:disabled) {
+      background: color-mix(in srgb, var(--accent), white 10%);
+      transform: translateY(-2px);
+    }
+  }
+
+  &.outline {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+
+    &:hover:not(:disabled) {
+      background: color-mix(in srgb, var(--accent), transparent 90%);
+    }
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    filter: grayscale(1);
+  }
+}
