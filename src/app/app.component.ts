@@ -9,5 +9,5 @@ import { NavBarComponent } from "./core/pages/shared/nav-bar/nav-bar.component";
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  protected readonly title = signal('LMSFrontend');
+  public readonly title = 'LMSFrontend';
 }
