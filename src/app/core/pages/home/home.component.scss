@@ -1,0 +1,196 @@
+.home-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+
+  h1 {
+    font-family: 'EB Garamond', serif;
+    font-size: 2.5rem;
+    color: var(--primary-text-color);
+    margin-bottom: 30px;
+    font-weight: 700;
+  }
+}
+
+.search-card {
+  background: var(--card-bg);
+  padding: 35px;
+  border-radius: 30px; 
+  box-shadow: 0 10px 30px rgba(93, 64, 55, 0.05);
+  border: 1px solid var(--border-color);
+  margin-bottom: 40px;
+
+  .main-search-row {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+
+    .search-input {
+      flex: 1;
+      height: 52px;
+      background-color: #fcfaf7; 
+      border: 1px solid var(--border-color);
+      padding: 0 25px;
+      border-radius: 50px;
+      font-size: 1rem;
+      color: var(--primary-text-color);
+      font-family: 'Figtree', sans-serif;
+      transition: all 0.3s ease;
+
+      &:focus {
+        outline: none;
+        border-color: var(--secondary-bg-color);
+        background-color: #fff;
+        box-shadow: 0 0 0 4px rgba(179, 106, 94, 0.1);
+      }
+    }
+  }
+}
+
+
+.btn-primary {
+  background-color: var(--secondary-bg-color) !important; 
+  color: var(--secondary-text-color) !important;       
+  height: 52px;
+  padding: 0 30px;
+  border-radius: 50px;
+  border: none;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    filter: brightness(0.95);
+    box-shadow: 0 5px 15px rgba(179, 106, 94, 0.2);
+  }
+}
+
+.btn-secondary {
+  background-color: #f5f1ea !important;
+  color: var(--primary-text-color) !important;
+  height: 52px;
+  padding: 0 25px;
+  border-radius: 50px;
+  border: 1px solid var(--border-color);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: #ede7dc !important;
+  }
+}
+
+.advanced-filters-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 25px;
+  padding-top: 25px;
+  border-top: 1px solid var(--border-color);
+
+  .filter-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    label {
+      font-family: 'EB Garamond', serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--primary-text-color);
+    }
+
+    input, select {
+      height: 45px;
+      padding: 0 15px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      background: #fff;
+      color: var(--primary-text-color);
+      font-family: 'Figtree', sans-serif;
+
+      &:focus {
+        outline: none;
+        border-color: var(--secondary-bg-color);
+      }
+    }
+  }
+}
+
+.results-container {
+  background: var(--card-bg);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(93, 64, 55, 0.03);
+  border: 1px solid var(--border-color);
+}
+
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  thead th {
+    background: #f9f7f4;
+    padding: 18px;
+    text-align: left;
+    font-family: 'EB Garamond', serif;
+    font-weight: 700;
+    color: var(--primary-text-color);
+    border-bottom: 1px solid var(--border-color);
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+  }
+
+  tbody td {
+    padding: 18px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--primary-text-color);
+    font-size: 0.95rem;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  tr:hover {
+    background-color: #fffcf9;
+  }
+}
+
+.availability-tag {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  display: inline-block;
+
+  &.available {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #c8e6c9;
+  }
+
+  &.unavailable {
+    background-color: #fff3e0; 
+    color: #e65100;
+    border: 1px solid #ffe0b2;
+  }
+}
+
+.info-msg {
+  text-align: center;
+  padding: 50px;
+  color: var(--primary-text-color);
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  font-size: 1.2rem;
+  background: var(--card-bg);
+  border-radius: 24px;
+  border: 1px solid var(--border-color);
+}
