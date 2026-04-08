@@ -18,6 +18,8 @@ export interface BookReadDto extends Dto {
     Genres?: BookGenre[];
     Count: number;
     Status: BookStatus;
+    LoanDurationDays?: number;
+    CanBeReserved?: boolean;
 }
 
 export interface BookUpdateDto extends Dto {

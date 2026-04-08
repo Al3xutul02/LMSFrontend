@@ -1,0 +1,97 @@
+.book-card-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+
+  
+  .details-popover {
+    display: flex;
+    flex-direction: column; // Așează elementele pe verticală
+    gap: 12px;               // Creează spațiu egal între Header, Body și Footer
+    
+    position: absolute;
+    top: 0;
+    left: 100%;
+    z-index: 1000;
+    width: 280px;
+    padding: 15px;
+    
+    background-color: var(--card-bg);
+    color: var(--primary-text-color);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    
+    // Starea pentru animație
+    opacity: 1;
+    visibility: visible;
+    transition: all 0.3s ease;
+    pointer-events: none;
+
+    .header-popover {
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 10px;
+      h3 {
+        color: var(--secondary-bg-color);
+        margin: 0;
+      }
+    }
+
+    .body-popover {
+        display: flex;
+        flex-direction: column; 
+        gap: 8px;
+
+        .description {
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .loan-duration {
+            font-size: 0.85rem;
+            color: var(--secondary-bg-color);
+            font-weight: 500;
+        }
+    }
+
+    .footer-popover {
+        display: flex;
+        justify-content: flex-start;
+        margin-top: 5px;
+        border-top: 1px solid var(--border-color);
+        padding-top: 10px;
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            
+            background-color: var(--primary-bg-color);
+            color: var(--secondary-bg-color);
+            border: 1px solid var(--border-color);
+        }
+        }
+  }
+
+  &:hover {
+    .details-popover {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(10px);
+    }
+  }
+
+  &.on-left {
+    .details-popover {
+      left: auto;
+      right: 100%;
+    }
+    
+    &:hover .details-popover {
+      transform: translateX(-10px);
+    }
+  }
+}

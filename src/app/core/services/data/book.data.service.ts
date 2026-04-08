@@ -8,4 +8,8 @@ export class BookDataService
   constructor() {
     super('book');
   }
+
+  getDetails(isbn: number) {
+    return this.http.get<BookReadDto>(`${this.apiCallUrl}/get-details/${isbn}`);
+  }
 }

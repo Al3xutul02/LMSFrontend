@@ -1,0 +1,22 @@
+<div class="book-card-container">
+  <ng-content></ng-content>
+
+  @if(bookDto){
+  <div class="details-popover">
+    <div class="header-popover">
+      <h3>{{bookDto.Title}}</h3> 
+      <span class="author">{{bookDto.Author}}</span>
+    </div>
+
+    <div class="body-popover">
+      <span class="description">{{bookDto.Description}}</span>
+      <span class="loan-duration">Loan Duration: {{bookDto.LoanDurationDays}}</span>
+    </div>
+
+    <div class="footer-popover">
+      <span class="status">{{bookDto.Status}}</span>
+    </div>
+  </div>
+
+  }
+</div>
