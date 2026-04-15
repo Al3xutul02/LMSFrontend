@@ -5,12 +5,13 @@ import { Observable } from 'rxjs';
 export class DataService<TCreateDto, TReadDto, TUpdateDto> {
   protected http: HttpClient = inject(HttpClient);
 
-  protected webApiUrl = 'https://localhost:7076';
+  protected webApiUrl: string = 'https://localhost:7076';
   protected controllerMapping: string = '';
-  protected apiCallUrl = `${this.webApiUrl}/${this.controllerMapping}`;
+  protected apiCallUrl: string;
 
   constructor(controllerMapping: string) {
     this.controllerMapping = controllerMapping;
+    this.apiCallUrl = `${this.webApiUrl}/${this.controllerMapping}`;
   }
 
   // GET requests
