@@ -15,7 +15,7 @@ export interface BookReadDto extends Dto {
     title: string;
     author: string;
     description: string;
-    genress?: BookGenre[];
+    genres?: BookGenre[];
     count: number;
     status: BookStatus;
 }
@@ -25,7 +25,7 @@ export interface BookUpdateDto extends Dto {
     title: string;
     author: string;
     description: string;
-    genress?: BookGenre[];
+    genres?: BookGenre[];
     count: number;
     status: BookStatus;
 }
