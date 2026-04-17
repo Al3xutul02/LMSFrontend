@@ -2,24 +2,24 @@ import { Dto, LoanStatus } from "../app.models";
 import { BookRelationDto } from "./book.dtos";
 
 export interface LoanCreateDto extends Dto {
-    LoanerName: string;
-    BookRelations?: BookRelationDto[];
+    loanerName: string;
+    bookRelations?: BookRelationDto[];
 }
 
 export interface LoanReadDto extends Dto {
-    Id: number;
-    LoanerName: string;
-    FineId?: number;
-    IssueDate: Date;
-    DueDate: Date;
-    Status: LoanStatus;
-    BookRelations?: BookRelationDto[];
+    id: number;
+    loanerName: string;
+    fineId?: number;
+    issueDate: Date;
+    dueDate: Date;
+    status: LoanStatus;
+    bookRelations?: BookRelationDto[];
 }
 
 export interface LoanUpdateDto extends Dto {
-    Id: number;
-    IssueDate: Date;
-    DueDate: Date;
-    Status: LoanStatus;
-    BookRelations?: BookRelationDto[];
+    id: number;
+    issueDate: Date;
+    dueDate: Date;
+    status: LoanStatus;
+    bookRelations?: BookRelationDto[];
 }

@@ -1,24 +1,24 @@
 import { Dto, UserRole } from "../app.models";
 
 export interface UserCreateDto extends Dto {
-    Name: string;
-    Email: string;
-    Password: string;
-    Role: UserRole;
+    name: string;
+    email: string;
+    password: string;
+    role: UserRole;
 }
 
 export interface UserReadDto extends Dto {
-    Id: number;
-    Name: string;
-    Email: string;
-    Role: UserRole;
-    EmployeeId?: number;
-    BranchId?: number;
+    id: number;
+    name: string;
+    email: string;
+    role: UserRole;
+    employeeId?: number;
+    branchId?: number;
 } 
 
 export interface UserUpdateDto extends Dto {
-    Id: number;
-    Name: string;
-    Email: string;
-    Password: string;
+    id: number;
+    name: string;
+    email: string;
+    password: string;
 }
