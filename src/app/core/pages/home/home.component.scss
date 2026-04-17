@@ -1,9 +1,9 @@
 .home-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 40px 20px 100px 20px;// Am redus puțin padding-ul ca să câștigi spațiu
+  padding: 40px 20px 100px 20px;
   
-  /* MODIFICARE: Forțăm containerul să ocupe înălțimea disponibilă */
+  
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -11,22 +11,22 @@
 
   h1 {
     font-family: 'EB Garamond', serif;
-    font-size: 2.2rem; // Puțin mai mic pentru a economisi spațiu vertical
+    font-size: 2.2rem; 
     color: var(--primary-text-color);
     margin-bottom: 20px;
     font-weight: 700;
-    flex-shrink: 0; // Previne comprimarea titlului
+    flex-shrink: 0; 
   }
 }
 
 .search-card {
   background: var(--card-bg);
-  padding: 25px; // Redus de la 35px
+  padding: 25px; 
   border-radius: 30px; 
   box-shadow: 0 10px 30px rgba(93, 64, 55, 0.05);
   border: 1px solid var(--border-color);
   margin-bottom: 20px;
-  flex-shrink: 0; // MODIFICARE: Cardul de căutare nu se va micșora niciodată
+  flex-shrink: 0;
 
   .main-search-row {
     display: flex;
@@ -55,21 +55,19 @@
   }
 }
 
-/* Secțiunea de rezultate primește scroll-ul */
 .results-container {
   background: var(--card-bg);
-  border-radius: 32px; // Aceasta rotunjește toate cele 4 colțuri
+  border-radius: 32px; 
   overflow: hidden;
   border: 1px solid var(--border-color);
   box-shadow: 0 10px 30px rgba(93, 64, 55, 0.03);
   
-  /* MODIFICARE: Aceasta este cheia problemei tale */
-  flex-grow: 1;      // Ocupă tot spațiul rămas liber
-  overflow-y: auto;  // Adaugă scroll vertical DOAR pentru tabel dacă e nevoie
-  min-height: 0;     // Important pentru flexbox să permită scroll-ul
+  
+  flex-grow: 1;      
+  overflow-y: auto;  
+  min-height: 0;    
   margin-bottom: 40px;
 
-  /* Stil pentru scrollbar (opțional, să arate mai bine) */
   &::-webkit-scrollbar {
     width: 8px;
   }
@@ -81,12 +79,12 @@
 
 .styled-table {
   width: 100%;
-  border-collapse: separate; // Schimbat din collapse pentru a păstra border-radius
+  border-collapse: separate; 
   border-spacing: 0;
   
 
   thead {
-    position: sticky; // MODIFICARE: Capul de tabel rămâne fix când dai scroll
+    position: sticky; 
     top: 0;
     z-index: 10;
   }
@@ -106,21 +104,18 @@
 
  tbody {
     tr {
-      // Forțăm înălțimea la nivel de rând
       height: 70px; 
       
       td {
-        height: 70px; // Dublăm siguranța la nivel de celulă
+        height: 70px; 
         padding: 0 25px;
         vertical-align: middle;
-        box-sizing: border-box; // Foarte important pentru calculul înălțimii
+        box-sizing: border-box; 
         border-bottom: 1px solid var(--border-color);
       }
 
-      // Tratament special pentru ultimul rând
       &:last-child td {
         border-bottom: none;
-        // Compensăm lipsa bordurii de 1px pentru a păstra înălțimea vizuală identică
         padding-bottom: 1px; 
       }
     }
@@ -132,7 +127,6 @@
 
 }
 
-/* Restul stilurilor rămân la fel, dar curățate */
 .advanced-filters-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -163,7 +157,6 @@
   }
 }
 
-// Butoane și Tag-uri (Neschimbate)
 .btn-primary, .btn-secondary {
   height: 52px;
   padding: 0 30px;
