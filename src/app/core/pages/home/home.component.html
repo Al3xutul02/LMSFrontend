@@ -25,7 +25,7 @@
         <div class="filter-item">
           <label>Filială</label>
           <select formControlName="branchId">
-            <option [value]="null">Toate Filialele</option>
+            <option [value]='null'>Toate Filialele</option>
             @for(branch of branches; track branch.id) {
             <option [value]="branch.id">
               {{ branch.name }}
@@ -44,19 +44,19 @@
         <tr>
           <th>Titlu</th>
           <th>Autor</th>
-          <th>Filială</th>
+          <th>Filiale</th>
           <th>Disponibilitate</th>
         </tr>
       </thead>
       <tbody>
-        @for(book of books; track book.id) {
+        @for(book of books; track book.isbn) {
         <tr>
           <td>{{ book.title }}</td>
           <td>{{ book.author }}</td>
-          <td>{{ book.branchName }}</td>
+          <td>{{ book.branches?.join(', ') }}</td>
           <td>
-            <span class="availability-tag" [class.available]="book.isAvailable" [class.unavailable]="!book.isAvailable">
-              {{ book.isAvailable ? 'Disponibil' : 'Împrumutat' }}
+            <span class="availability-tag" [class.available]="book.status === 'in-stock'" [class.unavailable]="book.status !== 'in-stock'">
+              {{ book.status === 'in-stock' ? 'Disponibil' : 'Indisponibil' }}
             </span>
           </td>
         </tr>

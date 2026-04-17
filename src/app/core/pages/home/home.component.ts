@@ -1,6 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { BookDataService } from '../../services/data/book.data.service';
+import { BranchDataService } from '../../services/data/branch.data.service';
+import { BookReadDto } from '../../models/dtos/book.dtos';
+import { BranchReadDto } from '../../models/dtos/branch.dtos';
 
 @Component({
   selector: 'home',
@@ -12,10 +15,11 @@ import { BookDataService } from '../../services/data/book.data.service';
 })
 export class HomeComponent implements OnInit {
   bookService: BookDataService = inject(BookDataService);
+  branchService: BranchDataService = inject(BranchDataService);
 
   searchForm: FormGroup;
-  books: any[] = [];
-  branches: any[] = []; 
+  books: BookReadDto[] = [];
+  branches: BranchReadDto[] = []; 
   showFilters = false;
   hasSearched = false;
 
@@ -28,10 +32,11 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.branches = [
-      { id: 1, name: 'Biblioteca Centrală' },
-      { id: 2, name: 'Filiala Copou' }
-    ];
+    this.branchService.getItems().subscribe({
+      next: (res) => {
+        this.branches = res;
+      }
+    });
   }
 
   toggleFilters() {
@@ -40,6 +45,9 @@ export class HomeComponent implements OnInit {
 
   onSearch() {
     this.hasSearched = true;
+    if (this.searchForm.value.branchId === 'null') {
+      this.searchForm.patchValue({ branchId: null });
+    }
     const values = this.searchForm.value;
 
     this.bookService.searchBooks(values.title, values.author, values.branchId).subscribe({
