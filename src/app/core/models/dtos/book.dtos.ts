@@ -5,7 +5,7 @@ export interface BookCreateDto extends Dto {
     title: string;
     author: string;
     description: string;
-    genress?: BookGenre[];
+    genres?: BookGenre[];
     count: number;
     status: BookStatus;
 }
