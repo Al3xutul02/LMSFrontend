@@ -1,13 +1,13 @@
 import { BookGenre, BookStatus, Dto } from "../app.models";
 
 export interface BookCreateDto extends Dto {
-    ISBN: number;
-    Title: string;
-    Author: string;
-    Description: string;
-    Genres?: BookGenre[];
-    Count: number;
-    Status: BookStatus;
+    isbn: number;
+    title: string;
+    author: string;
+    description: string;
+    genres?: BookGenre[];
+    count: number;
+    status: BookStatus;
 }
 
 export interface BookReadDto extends Dto {
@@ -23,16 +23,16 @@ export interface BookReadDto extends Dto {
 }
 
 export interface BookUpdateDto extends Dto {
-    ISBN: number;
-    Title: string;
-    Author: string;
-    Description: string;
-    Genres?: BookGenre[];
-    Count: number;
-    Status: BookStatus;
+    isbn: number;
+    title: string;
+    author: string;
+    description: string;
+    genres?: BookGenre[];
+    count: number;
+    status: BookStatus;
 }
 
 export interface BookRelationDto extends Dto {
-    ISBN: number;
-    Count: number;
+    isbn: number;
+    count: number;
 }
