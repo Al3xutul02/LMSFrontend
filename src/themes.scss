@@ -1,5 +1,16 @@
 // Default theme variables
 :root, .theme-default {
+  --primary-bg-color: #fdfaf6;       
+  --secondary-bg-color: #b36a5e;   
+  --card-bg: #ffffff;                
+  --primary-text-color: #5d4037;     
+  --secondary-text-color: #fdfaf6;  
+  --accent: #dcd1be;                
+  --border-color: #f1ece4;           
+}
+
+// Old theme for backup
+.theme-legacy {
   --primary-bg-color: #f4f4f4;
   --secondary-bg-color: #2b59a4;
   --card-bg: #ffffff;
