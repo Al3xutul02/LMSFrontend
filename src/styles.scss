@@ -1,5 +1,7 @@
 @use "themes.scss";
 
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Figtree:wght@400;600&display=swap');
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -9,65 +11,93 @@
 body {
   background-color: var(--primary-bg-color);
   color: var(--primary-text-color);
-  transition: background-color 0.3s ease;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: background-color 0.4s ease;
+  font-family: 'Figtree', sans-serif;
+  line-height: 1.6;
+}
+
+h1, h2, h3, .logo {
+  font-family: 'EB Garamond', serif;
+  font-weight: 700;
 }
 
 a {
-  color: var(--accent);
+  color: var(--primary-text-color);
   text-decoration: none;
-  transition: color 0.2s;
+  border-bottom: 1px solid transparent;
+  transition: all 0.2s ease;
 
   &:hover {
-    color: color-mix(in srgb, var(--accent), white 20%);;
-    text-decoration: underline;
+    color: var(--secondary-bg-color); 
+    border-bottom: 1px solid var(--secondary-bg-color);
   }
 }
 
-// Global Utility for Cards
 .card {
   background-color: var(--card-bg);
-  border-radius: 8px;
+  border-radius: 24px;
   border: 1px solid var(--border-color);
-  padding: 1.5rem;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(93, 64, 55, 0.04);
 }
 
 .action-btn {
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-weight: 600;
+  padding: 12px 28px;
+  border-radius: 50px; 
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 0.95rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.9rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: inherit;
 
   &.primary {
-    background: var(--accent);
-    color: white;
+    background: var(--secondary-bg-color); 
+    color: var(--secondary-text-color);    
     border: none;
-    box-shadow: 0 4px 12px color-mix(in srgb, var(--accent), transparent 70%);
+    box-shadow: 0 4px 15px rgba(179, 106, 94, 0.2); 
     
     &:hover:not(:disabled) {
-      background: color-mix(in srgb, var(--accent), white 10%);
+      background: color-mix(in srgb, var(--secondary-bg-color), black 5%);
       transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(179, 106, 94, 0.3);
     }
   }
 
   &.outline {
     background: transparent;
-    border: 1px solid var(--accent);
-    color: var(--accent);
+    border: 2px solid var(--accent);
+    color: var(--primary-text-color);
 
     &:hover:not(:disabled) {
-      background: color-mix(in srgb, var(--accent), transparent 90%);
+      background: var(--accent); 
+      border-color: var(--accent);
     }
   }
 
   &:disabled {
-    opacity: 0.5;
+    opacity: 0.4;
     cursor: not-allowed;
-    filter: grayscale(1);
+    filter: sepia(0.5); 
+  }
+}
+
+
+input, select {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 12px 16px;
+  color: var(--primary-text-color);
+  font-family: inherit;
+  
+  &:focus {
+    outline: none;
+    border-color: var(--secondary-bg-color);
+    box-shadow: 0 0 0 4px rgba(179, 106, 94, 0.1);
   }
 }
