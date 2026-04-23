@@ -1,6 +1,8 @@
 <div class="app-container">
   
+  @if (authService.isLoggedIn()) {
   <nav-bar></nav-bar>
+  }
 
   <main class="main-content">
     <router-outlet></router-outlet>
