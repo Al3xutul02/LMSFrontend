@@ -4,6 +4,7 @@ import { BookRelationDto } from "./book.dtos";
 export interface LoanCreateDto extends Dto {
     loanerName: string;
     bookRelations?: BookRelationDto[];
+    bookIds: number[];
 }
 
 export interface LoanReadDto extends Dto {
