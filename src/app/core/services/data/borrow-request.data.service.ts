@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DataService } from './generic/data.service';
-import { BorrowRequestCreateDto, BorrowRequestReadDto } from '../../models/dtos/borrow-request.dtos';
+import { BorrowRequestCreateDto, BorrowRequestReadDto } from '../../models/dtos/borrow-request.dto';
 
 @Injectable({ providedIn: 'root' })
 export class BorrowRequestDataService

@@ -1,14 +1,14 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BorrowRequestDataService } from '../../services/data/borrow-request.data.service';
-import { BorrowRequestReadDto } from '../../models/dtos/borrow-request.dtos';
+import { BorrowRequestReadDto } from '../../models/dtos/borrow-request.dto';
 
 @Component({
   selector: 'app-pending-requests',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './pending-requests.component.html',
-  styleUrls: ['./pending-requests.component.css']
+  templateUrl: './pending-request.component.html',
+  styleUrls: ['./pending-request.component.css']
 })
 export class PendingRequestsComponent implements OnInit {
   private borrowRequestService = inject(BorrowRequestDataService);
