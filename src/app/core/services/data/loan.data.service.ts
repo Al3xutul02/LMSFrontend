@@ -22,4 +22,7 @@ export class LoanDataService extends DataService<LoanCreateDto, LoanReadDto, Loa
   activateReservation(id: number): Observable<LoanReadDto> {
     return this.http.patch<LoanReadDto>(`${this.apiCallUrl}/activate-reservation/${id}`, {});
   }
+  getUserLoans(userId: number): Observable<LoanReadDto[]> {
+  return this.http.get<LoanReadDto[]>(`${this.apiCallUrl}/user-loans?userId=${userId}`);
+}
 }

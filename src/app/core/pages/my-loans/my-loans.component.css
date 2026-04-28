@@ -1,0 +1,96 @@
+.my-loans {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.state-msg {
+  text-align: center;
+  padding: 2rem;
+  color: #888;
+}
+
+.state-msg.error {
+  color: #dc3545;
+}
+
+.loan-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.loan-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.loan-id {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.badge {
+  padding: 0.3rem 0.85rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-active  { background: #d4edda; color: #155724; }
+.badge-overdue { background: #f8d7da; color: #721c24; }
+
+.loan-dates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.label {
+  font-weight: 600;
+  margin-right: 0.25rem;
+}
+
+.days-left {
+  font-weight: 700;
+  color: #28a745;
+}
+
+.days-left.overdue {
+  color: #dc3545;
+}
+
+.books {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.books ul {
+  margin: 0.4rem 0 0 1.2rem;
+  padding: 0;
+  color: #555;
+}
+
+.fine-warning {
+  margin-top: 0.75rem;
+  padding: 0.5rem 1rem;
+  background: #fff3cd;
+  border-left: 4px solid #ffc107;
+  border-radius: 4px;
+  color: #856404;
+  font-size: 0.9rem;
+}

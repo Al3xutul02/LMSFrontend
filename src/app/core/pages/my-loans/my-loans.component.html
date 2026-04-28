@@ -1,0 +1,47 @@
+<div class="my-loans">
+  <h2>My Current Loans</h2>
+
+  <div *ngIf="loading" class="state-msg">Loading...</div>
+  <div *ngIf="error" class="state-msg error">{{ error }}</div>
+  <div *ngIf="!loading && !error && loans.length === 0" class="state-msg">
+    You have no active loans.
+  </div>
+
+  <div class="loan-card" *ngFor="let loan of loans">
+
+    <div class="loan-header">
+      <span class="loan-id">Loan #{{ loan.id }} — {{ loan.loanerName }}</span>
+      <span class="badge" [ngClass]="{
+        'badge-active': loan.status === LoanStatus.Active,
+        'badge-overdue': loan.status === LoanStatus.Overdue
+      }">{{ loan.status }}</span>
+    </div>
+
+    <div class="loan-dates">
+      <div><span class="label">Issued:</span> {{ loan.issueDate | date:'mediumDate' }}</div>
+      <div><span class="label">Due:</span> {{ loan.dueDate | date:'mediumDate' }}</div>
+      <div class="days-left" [ngClass]="{ overdue: getDaysLeft(loan.dueDate) < 0 }">
+        <ng-container *ngIf="getDaysLeft(loan.dueDate) >= 0">
+          {{ getDaysLeft(loan.dueDate) }} day(s) left
+        </ng-container>
+        <ng-container *ngIf="getDaysLeft(loan.dueDate) < 0">
+          {{ getDaysLeft(loan.dueDate) * -1 }} day(s) overdue
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="books" *ngIf="loan.bookRelations?.length">
+      <span class="label">Books:</span>
+      <ul>
+        <li *ngFor="let book of loan.bookRelations">
+          ISBN: {{ book.bookISBN }} &times; {{ book.count }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="fine-warning" *ngIf="loan.fineId">
+      ⚠ Fine attached — Fine ID: {{ loan.fineId }}
+    </div>
+
+  </div>
+</div>
