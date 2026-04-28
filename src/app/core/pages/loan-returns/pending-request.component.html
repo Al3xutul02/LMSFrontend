@@ -1,0 +1,38 @@
+<div class="container mt-4">
+  <h3>Gestionare Returnări (Finish Requests)</h3>
+  
+  <div *ngIf="pendingLoans.length === 0" class="alert alert-info">
+    Nu există împrumuturi active în acest moment.
+  </div>
+
+  <table class="table table-hover" *ngIf="pendingLoans.length > 0">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Cititor</th>
+        <th>Dată Împrumut</th>
+        <th>Dată Scadență</th>
+        <th>Cărți</th>
+        <th>Acțiune</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let loan of pendingLoans">
+        <td>{{ loan.id }}</td>
+        <td>{{ loan.loanerName }}</td>
+        <td>{{ loan.issueDate | date:'dd/MM/yyyy' }}</td>
+        <td>{{ loan.dueDate | date:'dd/MM/yyyy' }}</td>
+        <td>
+          <span *ngFor="let rel of loan.bookRelations" class="badge bg-secondary me-1">
+            ISBN: {{ rel.isbn }} ({{ rel.count }})
+          </span>
+        </td>
+        <td>
+          <button class="btn btn-success btn-sm" (click)="onFinishLoan(loan)">
+            Finalizează (Returnat)
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
