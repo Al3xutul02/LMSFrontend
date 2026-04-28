@@ -12,8 +12,8 @@
     <div class="loan-header">
       <span class="loan-id">Loan #{{ loan.id }} — {{ loan.loanerName }}</span>
       <span class="badge" [ngClass]="{
-        'badge-active': loan.status === LoanStatus.Active,
-        'badge-overdue': loan.status === LoanStatus.Overdue
+       'badge-active': loan.status === 'active',
+        'badge-overdue': loan.status === 'overdue'
       }">{{ loan.status }}</span>
     </div>
 
@@ -34,7 +34,7 @@
       <span class="label">Books:</span>
       <ul>
         <li *ngFor="let book of loan.bookRelations">
-          ISBN: {{ book.bookISBN }} &times; {{ book.count }}
+          ISBN: {{ book.isbn }} &times; {{ book.count }}
         </li>
       </ul>
     </div>

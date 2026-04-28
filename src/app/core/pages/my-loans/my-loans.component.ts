@@ -1,9 +1,12 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { LoanDataService } from '../../services/data/loan.data.service';
 import { LoanReadDto } from '../../models/dtos/loan.dtos';
-import { LoanStatus } from '../../models/app.models';
+
+import { CommonModule } from '@angular/common';  // add
 
 @Component({
+  standalone: true,           // add
+  imports: [CommonModule],    // add
   selector: 'app-my-loans',
   templateUrl: './my-loans.component.html',
   styleUrls: ['./my-loans.component.css']
@@ -14,7 +17,6 @@ export class MyLoansComponent implements OnInit {
   loans: LoanReadDto[] = [];
   loading = true;
   error = '';
-  LoanStatus = LoanStatus;
   userId = 1; // replace with your auth service user ID
 
   ngOnInit(): void {
