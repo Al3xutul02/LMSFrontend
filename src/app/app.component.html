@@ -1,6 +1,6 @@
 <div class="app-container">
   
-  @if (authService.isLoggedIn()) {
+  @if (!authService.isLoggedIn()) {
   <nav-bar></nav-bar>
   }
 
