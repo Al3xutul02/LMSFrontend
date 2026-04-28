@@ -3,10 +3,11 @@ import { RouterOutlet } from '@angular/router';
 import { NavBarComponent } from "./core/pages/shared/nav-bar/nav-bar.component";
 import { ReserveComponent } from "./core/pages/Reserve/reserve.component";
 import { BookReadDto } from './core/models/dtos/book.dtos';
+import { MyLoansComponent } from './core/pages/my-loans/my-loans.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavBarComponent, ReserveComponent, ReserveComponent],
+  imports: [RouterOutlet, NavBarComponent, MyLoansComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
