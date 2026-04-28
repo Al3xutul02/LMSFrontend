@@ -1,0 +1,72 @@
+<div class="profile-page">
+  <aside class="sidebar">
+    <div class="user-card">
+      <div class="profile-photo-container">
+        <img src="assets/profile-placeholder.png" alt="Profile Photo" class="profile-photo">
+      </div>
+      <h2 class="user-full-name">{{ userProfile?.name }}</h2>
+      
+      <div class="borrowing-stats">
+        <div class="stat-item box-stat">
+          <span class="stat-label">Books Borrowed</span>
+          <span class="stat-number" [class.limit-reached]="borrowedCount >= 10">{{ borrowedCount }}</span>
+        </div>
+        <div class="stat-item box-stat">
+          <span class="stat-label">Books to Return</span>
+          <span class="stat-number">{{ returnList.length }}</span>
+        </div>
+      </div>
+
+      <div class="borrow-limit-warning" *ngIf="borrowedCount >= 10">
+        <small>Ați atins limita maximă de 10 cărți.</small>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <section class="account-header">
+      <h1>My Account</h1>
+      <button class="btn-primary-custom" (click)="navigateToCatalog()">Add More</button>
+    </section>
+
+    <div class="info-block">
+      <div class="block-header">
+        <h3>Books to Return</h3>
+        <div class="genre-favorite">
+          <span>Genre: <strong>Mystery</strong></span>
+          <button class="favorite-toggle" (click)="toggleFavoriteGenre()">
+            <i [class]="isFavorite ? 'fas fa-star' : 'far fa-star'"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="return-list">
+        <div class="list-row" *ngFor="let book of returnList">
+          <span class="book-title">{{ book.title }}</span>
+          <span class="due-date" [class.overdue]="isOverdue(book.dueDate)">
+            {{ book.dueDate | date:'MMMM d, yyyy' }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="personalization-block">
+      <h3>Borrow More Books</h3>
+      <div class="recommendations-grid">
+        <div class="rec-card" *ngFor="let book of recommendations">
+          <img [src]="book.coverUrl" alt="Cover" class="rec-cover">
+          <div class="rec-details">
+            <h4>{{ book.title }}</h4>
+            <p>{{ book.author }}</p>
+            <div class="rating">★★★★★</div>
+            <button class="btn-borrow-sm">Borrow</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<footer class="contact-footer">
+  <p>Contact Us: 123 Library St., Craiova | Phone: 0251-123-456 | Email: info@libraryportal.com</p>
+</footer>
