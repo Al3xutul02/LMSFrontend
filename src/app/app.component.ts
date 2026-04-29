@@ -1,6 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavBarComponent } from "./core/pages/shared/nav-bar/nav-bar.component";
+import { AuthService } from './core/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -9,5 +10,6 @@ import { NavBarComponent } from "./core/pages/shared/nav-bar/nav-bar.component";
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
+  protected authService: AuthService = inject(AuthService);
   public readonly title = 'LMSFrontend';
 }
