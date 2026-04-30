@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     const isLoggedIn = await this.authService.isLoggedIn();
     if (isLoggedIn) {
-      this.router.navigate(['/feed']);
+      this.router.navigate(['/home']);
     }
   }
 
@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
   private handleLogin(): void {
     const dto: LoginDto = { username: this.username, password: this.password };
     this.authService.login(dto).subscribe({
-      next: () => this.router.navigate(['/feed']),
+      next: () => this.router.navigate(['/home']),
       error: err => console.error('Login failed', err)
     });
   }
@@ -63,7 +63,7 @@ export class LoginComponent implements OnInit {
     };
 
     this.authService.register(dto).subscribe({
-      next: () => this.router.navigate(['/feed']),
+      next: () => this.router.navigate(['/home']),
       error: err => console.error('Registration failed', err)
     });
   }
