@@ -22,7 +22,7 @@ export class ReaderSeeProfileComponent implements OnInit {
 
   ngOnInit(): void {
     
-    this.userDataService.getUserProfile(1).subscribe({
+    this.userDataService.getUserProfile(2).subscribe({
       next: (data) => {
         this.userProfile = data;
         this.loadBorrowingData();
