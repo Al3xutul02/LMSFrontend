@@ -1,0 +1,144 @@
+.login-container {
+    height: 85vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--bg-color);
+    transition: background-color 0.3s ease;
+}
+
+.login-card {
+    background-color: var(--card-bg);
+    padding: 3rem;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 400px;
+    // Dynamic shadow based on theme brightness
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color);
+
+    .tabs {
+        display: flex;
+        position: relative;
+        margin-top: 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+
+        button {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 1rem;
+            color: var(--text-color);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+            width: auto; // Reset the 100% width from main button style
+
+            &.active {
+                opacity: 1;
+            }
+
+            &:hover {
+                background: none; // Reset hover effect for tabs
+                opacity: 1;
+            }
+        }
+
+        .underline {
+            position: absolute;
+            bottom: -1px;
+            height: 3px;
+            width: 50%;
+            background-color: var(--accent);
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    }
+
+    /* Ensure the submit button doesn't inherit the tab button layout */
+    form button[type="submit"] {
+        margin-top: 1rem;
+    }
+
+    .header {
+        text-align: center;
+        margin-bottom: 2rem;
+
+        .ghost-icon {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        h1 {
+            color: var(--text-color);
+            font-size: 1.8rem;
+            margin: 0;
+        }
+    }
+
+    .input-group {
+        margin-bottom: 1.5rem;
+
+        .error {
+            color: red;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+
+        label {
+            display: block;
+            color: color-mix(in srgb, var(--text-color), transparent 40%);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 6px;
+            // Slightly darker than the card background
+            background: color-mix(in srgb, var(--card-bg), black 15%);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-color);
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+
+            &:focus {
+                border-color: var(--accent);
+                box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent), transparent 80%);
+            }
+
+            &::placeholder {
+                color: color-mix(in srgb, var(--text-color), transparent 70%);
+            }
+        }
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        background-color: var(--accent);
+        color: color-mix(in srgb, var(--text-color), transparent 40%);; 
+        border: none;
+        border-radius: 6px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.1s;
+
+        &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        &:hover:not(:disabled) {
+            // Brightens the button slightly on hover
+            background-color: color-mix(in srgb, var(--accent), white 10%);
+        }
+
+        &:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+    }
+}
