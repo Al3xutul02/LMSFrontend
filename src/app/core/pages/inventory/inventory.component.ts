@@ -15,7 +15,6 @@ export class InventoryComponent implements OnInit {
   totalBooks = 0;
   booksAvailable = 0;
   loading = true;
-  error = '';
 
   ngOnInit(): void {
     this.bookService.getStats().subscribe({
@@ -24,10 +23,7 @@ export class InventoryComponent implements OnInit {
         this.booksAvailable = data.booksAvailable;
         this.loading = false;
       },
-      error: (err) => {
-        this.error = 'API error: ' + (err?.status ?? 'unknown');
-        this.loading = false;
-      }
+      error: () => { this.loading = false; }
     });
   }
 }
