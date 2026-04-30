@@ -1,4 +1,8 @@
-<div class="home-container">  
+<div class="home-container">
+  <book-details [bookDto]=this.hoveredBook
+       [style.left.px]="hoverPosition().x + 10" 
+       [style.top.px]="hoverPosition().y + 10" 
+       style="position: fixed; z-index: 1000;"></book-details>
   <div class="search-card">
     <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
       <div class="main-search-row">
@@ -48,7 +52,9 @@
       </thead>
       <tbody>
         @for(book of books; track book.isbn) {
-        <tr>
+        <tr (mouseenter)="onMouseEnter(book)"
+            (mouseleave)="onMouseLeave()"
+            (mousemove)="onMouseMove($event)">
           <td>{{ book.title }}</td>
           <td>{{ book.author }}</td>
           <td>{{ book.branches?.join(', ') }}</td>
@@ -70,3 +76,4 @@
   </div>
   }
   }
+</div>

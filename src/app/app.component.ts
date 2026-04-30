@@ -7,24 +7,13 @@ import { BookReadDto } from './core/models/dtos/book.dtos';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavBarComponent, BookDetailsComponent],
+  imports: [RouterOutlet, NavBarComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
   protected readonly authService: AuthService = inject(AuthService);
   public readonly title = 'LMSFrontend';
-  public readonly bookDto: BookReadDto = {
-    ISBN: 0,
-    Title: "Test Title",
-    Author: "Test Author",
-    Description: "Lorem Ipsum Est",
-    Genres: ['action', 'adventure'],
-    Count: 3,
-    Status: 'in-stock',
-    LoanDurationDays: 14,
-    CanBeReserved: true
-  };
 
   async ngOnInit(): Promise<void> {
     await this.authService.isLoggedIn();

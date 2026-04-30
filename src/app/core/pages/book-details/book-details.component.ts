@@ -12,5 +12,5 @@ import { BookReadDto } from "../../models/dtos/book.dtos" ;
 export class BookDetailsComponent {
   bookDataService: BookDataService = inject(BookDataService);
 
-  @Input() bookDto: BookReadDto | null = null; 
+  @Input() bookDto: BookReadDto | null = null;
 }
