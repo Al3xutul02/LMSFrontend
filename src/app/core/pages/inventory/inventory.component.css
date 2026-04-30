@@ -1,0 +1,38 @@
+.inventory {
+  max-width: 480px;
+  margin: 40px 0;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+}
+
+h2 { margin-bottom: 20px; font-size: 16px; }
+
+.inventory-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 14px;
+}
+
+.inventory-row:last-child { border-bottom: none; }
+
+.label { flex: 1; color: #444; }
+
+.value { font-weight: 700; font-size: 16px; min-width: 60px; }
+
+.btn-primary {
+  padding: 8px 18px;
+  background: #3a5fc5;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.btn-primary:hover { background: #2d4fa3; }

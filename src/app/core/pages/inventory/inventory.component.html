@@ -1,0 +1,20 @@
+<div class="inventory">
+  <h2>Manage Library Inventory</h2>
+
+  <div *ngIf="loading">Loading...</div>
+  <div *ngIf="error" style="color:red">{{ error }}</div>
+
+  <div *ngIf="!loading && !error">
+    <div class="inventory-row">
+      <span class="label">Total Books:</span>
+      <span class="value">{{ totalBooks | number }}</span>
+      <button class="btn-primary">Update Inventory</button>
+    </div>
+
+    <div class="inventory-row">
+      <span class="label">Books Available:</span>
+      <span class="value">{{ booksAvailable | number }}</span>
+      <button class="btn-primary">Manage Returns</button>
+    </div>
+  </div>
+</div>
