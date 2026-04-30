@@ -16,19 +16,17 @@ export class LoginComponent implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  isLoginMode = true; // Toggle state
-  
-  // Form fields
+  isLoginMode = true;
   username = '';
   password = '';
-  confirmPassword = ''; // For Register
-  email = ''; // For Register
+  confirmPassword = '';
+  email = '';
 
-  ngOnInit(): void {
-    // Ckeck if user is already logged in and redirect, decomment once feed page is implemented
-    //if (this.authService.isLoggedIn()) {
-    //  this.router.navigate(['/feed']); // Redirect to feed if already logged in
-    //}
+  async ngOnInit(): Promise<void> {
+    const isLoggedIn = await this.authService.isLoggedIn();
+    if (isLoggedIn) {
+      this.router.navigate(['/feed']);
+    }
   }
 
   toggleMode(mode: boolean): void {
@@ -46,28 +44,26 @@ export class LoginComponent implements OnInit {
   private handleLogin(): void {
     const dto: LoginDto = { username: this.username, password: this.password };
     this.authService.login(dto).subscribe({
-      //next: () => this.router.navigate(['/feed']), // Once the feed page is implemented, change this to navigate there
-      next: () => console.log('Login successful'),
+      next: () => this.router.navigate(['/feed']),
       error: err => console.error('Login failed', err)
     });
   }
 
   private handleRegister(): void {
-    const dto: UserCreateDto = { 
-        name: this.username, 
-        email: this.email, 
-        password: this.password,
-        role: 'reader'
-    };
-
     if (this.password !== this.confirmPassword) {
-        console.error('Passwords do not match');
-        return;
+      console.error('Passwords do not match');
+      return;
     }
 
+    const dto: UserCreateDto = { 
+      name: this.username, 
+      email: this.email, 
+      password: this.password,
+      role: 'reader'
+    };
+
     this.authService.register(dto).subscribe({
-      //next: () => this.router.navigate(['/feed']), // Once the feed page is implemented, change this to navigate there
-      next: () => console.log('Registration successful'),
+      next: () => this.router.navigate(['/feed']),
       error: err => console.error('Registration failed', err)
     });
   }
