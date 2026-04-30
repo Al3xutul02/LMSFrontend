@@ -1,10 +1,13 @@
 <div class="app-container">
   
-  <nav-bar></nav-bar>
-
+  @if (authService.loggedIn()) {
+    <nav-bar></nav-bar>
+  }
+ 
   <main class="main-content">
     <book-details [bookDto]=this.bookDto></book-details>
     <router-outlet></router-outlet>
   </main>
-
+ 
 </div>
+ 

@@ -11,15 +11,16 @@ export interface BookCreateDto extends Dto {
 }
 
 export interface BookReadDto extends Dto {
-    ISBN: number;
-    Title: string;
-    Author: string;
-    Description: string;
-    Genres?: BookGenre[];
-    Count: number;
-    Status: BookStatus;
-    LoanDurationDays?: number;
-    CanBeReserved?: boolean;
+    isbn: number;
+    title: string;
+    author: string;
+    description: string;
+    genres?: BookGenre[];
+    count: number;
+    status: BookStatus;
+    branches?: string[];
+    loanDurationDays?: number;
+    canBeReserved?: boolean;
 }
 
 export interface BookUpdateDto extends Dto {
