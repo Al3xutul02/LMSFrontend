@@ -23,3 +23,24 @@ export interface LoanUpdateDto extends Dto {
     status: LoanStatus;
     bookRelations?: BookRelationDto[];
 }
+
+export interface RequestedBookDto extends Dto{
+    title: string;
+    author: string;
+    availableCopies: number;
+    requestedQuantity: number;
+    status:LoanStatus;
+}
+
+export interface LoanDetailsDto extends Dto{
+    requestId: number;
+    requestDate:Date;
+    returnDeadline:Date;
+    userName: String;
+    userEmail: String;
+    userPhone: String; 
+    userRole: String;
+    activeLoansCount: number;
+    requestedBooks?: RequestedBookDto[];
+    overallStatus: String;
+}

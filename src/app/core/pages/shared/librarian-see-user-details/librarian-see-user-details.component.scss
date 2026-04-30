@@ -1,0 +1,98 @@
+.page-container {
+  background-color: var(--primary-bg-color);
+  min-height: 100vh;
+  color: var(--primary-text-color);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  header.main-header {
+    background-color: var(--secondary-bg-color);
+    color: var(--secondary-text-color);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+    h1 { margin: 0; font-size: 1.5rem; }
+  }
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+
+  @media (max-width: 992px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+  margin-bottom: 1.5rem;
+
+  h3 {
+    color: var(--secondary-bg-color);
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 0.5rem;
+    margin-top: 0;
+  }
+}
+
+.profile-card {
+  text-align: center;
+  .profile-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid var(--accent);
+    margin-bottom: 1rem;
+  }
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  
+  th {
+    text-align: left;
+    padding: 1rem;
+    background-color: var(--accent);
+    color: var(--primary-text-color);
+  }
+
+  td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+}
+
+.action-bar {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+
+  button {
+    padding: 0.8rem 1.5rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: opacity 0.2s;
+
+    &:hover { opacity: 0.9; }
+  }
+
+  .btn-approve { background-color: #6d8a71; color: white; } 
+  .btn-reject { background-color: var(--secondary-bg-color); color: white; }
+  .btn-print { background-color: var(--accent); color: var(--primary-text-color); }
+}
+
+.text-danger { color: #b32d2d; font-weight: bold; }

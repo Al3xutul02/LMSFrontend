@@ -1,0 +1,58 @@
+<div class="page-container">
+  
+
+  <div class="content-grid" *ngIf="loanDetails">
+    <aside class="user-sidebar">
+      <div class="card profile-card">
+        <img src="assets/profile-placeholder.png" alt="Profile" class="profile-img">
+        <h2 class="brown-text">{{ loanDetails.userName }}</h2>
+        
+        <div class="info-box">
+          <p><strong>Email:</strong> {{ loanDetails.userEmail }}</p>
+          <p><strong>Active Loans:</strong> {{ loanDetails.activeLoansCount }}</p>
+        </div>
+      </div>
+
+      <div class="card info-card">
+        <h3 class="brown-text">Request Info</h3>
+        <p><strong>ID:</strong> #R{{ loanDetails.requestId }}</p>
+        <p><strong>Date:</strong> {{ loanDetails.requestDate | date }}</p>
+      </div>
+    </aside>
+
+    <main class="details-main">
+      <div class="card table-card">
+        <h3 class="brown-text">Requested Books</h3>
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Book Title</th>
+              <th>Available</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let book of loanDetails.requestedBooks">
+              <td>{{ book.title }}</td>
+              <td>
+                <span [class.text-danger]="book.availableCopies === 0">
+                  {{ book.availableCopies }}
+                </span>
+              </td>
+              <td>
+                <button *ngIf="book.availableCopies > 0" class="btn-approve-small">Approve</button>
+                <span *ngIf="book.availableCopies === 0" class="badge-out">Out of Stock</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="action-bar">
+        <button class="btn-main-blue" (click)="approveRequest()">Approve Request</button>
+        <button class="btn-danger" (click)="rejectRequest()">Reject Request</button>
+        <button class="btn-outline" (click)="print()">Print Request</button>
+      </div>
+    </main>
+  </div>
+</div>
