@@ -1,18 +1,23 @@
 .nav-container {
-  background-color: var(--secondary-bg-color);
-  color: var(--secondary-text-color);
-  padding: 10px 20px 20px 20px;
+  padding: 20px; 
+  background-color: var(--primary-bg-color); 
 
   .navbar {
     display: flex;
     align-items: center;
-    width: 100%;
     justify-content: space-between;
+    background-color: var(--card-bg); 
+    padding: 15px 40px;
+    border-radius: 50px; 
+    box-shadow: 0 10px 25px rgba(93, 64, 55, 0.05); 
+    border: 1px solid var(--border-color);
 
     .navbar-brand {
-      font-size: 1.5rem;
-      font-weight: bold;
-      flex: 1;
+      font-family: 'EB Garamond', serif; 
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--primary-text-color);
+      letter-spacing: -0.5px;
     }
 
     .navbar-menu {
@@ -20,21 +25,29 @@
       display: flex;
       margin: 0;
       padding: 0;
-      flex: 2;
-      justify-content: flex-end;
+      gap: 10px;
 
       li {
-        margin-left: 20px;
-      
         a {
-          color: var(--secondary-text-color);
+          font-family: 'Figtree', sans-serif;
+          color: var(--primary-text-color);
           text-decoration: none;
-          margin-right: 20px;
-          transition: all 0.5s;
+          padding: 8px 20px;
+          border-radius: 25px;
+          font-weight: 600;
+          font-size: 0.95rem;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          border-bottom: none; 
 
           &:hover {
-            color: color-mix(in srgb, var(--secondary-text-color), white 50%);
-            text-decoration: underline;
+            background-color: var(--primary-bg-color);
+            color: var(--secondary-bg-color); 
+          }
+
+          &.active {
+            background-color: var(--secondary-bg-color); 
+            color: var(--secondary-text-color);  
+            box-shadow: 0 4px 12px rgba(179, 106, 94, 0.2);
           }
         }
       }

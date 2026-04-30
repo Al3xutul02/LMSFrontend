@@ -18,6 +18,7 @@ export interface BookReadDto extends Dto {
     genres?: BookGenre[];
     count: number;
     status: BookStatus;
+    branches?: string[];
 }
 
 export interface BookUpdateDto extends Dto {
