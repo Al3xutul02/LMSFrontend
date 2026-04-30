@@ -1,0 +1,61 @@
+.add-book {
+  max-width: 480px;
+  margin: 40px 0;
+  padding: 0 20px;
+}
+
+h2 { margin-bottom: 24px; }
+
+.state-msg {
+  padding: 10px 16px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.state-msg.success { background: #d4edda; color: #155724; }
+.state-msg.error   { background: #f8d7da; color: #721c24; }
+
+.form-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+label {
+  width: 80px;
+  font-weight: 600;
+  font-size: 14px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+input {
+  flex: 1;
+  padding: 7px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+input[type="number"] {
+  max-width: 100px;
+  flex: none;
+}
+
+.btn-add {
+  display: block;
+  margin-left: 92px;
+  padding: 9px 28px;
+  background: #3a5fc5;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn-add:hover:not(:disabled) { background: #2d4fa3; }
+.btn-add:disabled { opacity: 0.6; cursor: not-allowed; }
