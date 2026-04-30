@@ -29,18 +29,20 @@ export class LibrarianSeeUserDetailsComponent implements OnInit {
     }
   }
 
-  fetchDetails(id: number): void {
-    this.loanService.getItemById(id).subscribe({
+ fetchDetails(id: number): void {
+    // Folosește noua metodă, nu getItemById
+    this.loanService.getLoanDetails(id).subscribe({
       next: (data) => {
+        console.log("Date primite:", data); // Verifică în consola browserului
         this.loanDetails = data;
         this.loading = false;
       },
       error: (err) => {
-        console.error('Eroare la încărcarea detaliilor:', err);
+        console.error('Eroare la încărcare:', err);
         this.loading = false;
       }
     });
-  }
+}
 
   approveRequest(): void {
   if (this.loanDetails) {
