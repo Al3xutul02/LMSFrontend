@@ -3,10 +3,10 @@
     <div class="header-left">
       <span>Request Details</span>
     </div>
-    <div class="header-right">
-      <span style="margin-right: 15px; font-size: 14px;">Pending</span>
-      <button class="close-btn" (click)="close()">&times;</button>
-    </div>
+    <!-- <div class="header-right"> -->
+     <!-- <span style="margin-right: 15px; font-size: 14px;">Pending</span> -->
+      <!-- <button class="close-btn" (click)="close()">&times;</button> -->
+    <!-- </div> -->
   </div>
 
   <div class="modal-body">
@@ -34,11 +34,13 @@
 
       <div class="reserve-action-card">
         <h2 class="reserve-title">Rezervă Cartea</h2>
+        <label style="font-size: 11px; font-weight: 800; color: var(--accent); display: block; margin-top: 20px;">NUMĂR DE EXEMPLARE</label>
+        <input type="number" [(ngModel)]="bookCount" class="info-label">
         <label style="font-size: 11px; font-weight: 800; color: var(--accent); display: block; margin-top: 20px;">DATA RIDICĂRII</label>
-        <input type="date" [(ngModel)]="pickupDate" class="date-picker">
+        <input type="date" [(ngModel)]="pickupDate" class="info-label">
         
         <button class="confirm-btn" (click)="confirmReservation()">
-          Confirmă Rezervarea
+          Adaugă la Book Basket
         </button>
       </div>
     </main>

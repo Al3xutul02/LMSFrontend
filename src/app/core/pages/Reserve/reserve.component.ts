@@ -1,8 +1,13 @@
-import { Component, Input, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { LoanDataService } from '../../services/data/loan.data.service';
 import { BookReadDto, BookRelationDto } from '../../models/dtos/book.dtos';
+import { ActivatedRoute } from '@angular/router';
+import { BookDataService } from '../../services/data/book.data.service';
+import { LoanCreateDto } from '../../models/dtos/loan.dtos';
+import { AuthService } from '../../services/auth.service';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'reserve',
@@ -11,39 +16,79 @@ import { BookReadDto, BookRelationDto } from '../../models/dtos/book.dtos';
   templateUrl: './reserve.component.html',
   styleUrl: './reserve.component.scss'
 })
-export class ReserveComponent {
-  @Input() book!: BookReadDto;
+export class ReserveComponent implements OnInit {
+  authService = inject(AuthService);
+  loanService = inject(LoanDataService);
+  bookService = inject(BookDataService);
+  route = inject(ActivatedRoute);
   @Output() closed = new EventEmitter<void>();
   
+  book!: BookReadDto;
   pickupDate: string = '';
+  bookCount: number = 1;
 
-  constructor(private loanService: LoanDataService) {}
+  async ngOnInit() {
+    this.book = history.state.book;
+    
+    if (!this.book) {
+      const isbn: number = Number(this.route.snapshot.paramMap.get('isbn')!);
+      this.bookService.getItemById(isbn).subscribe({
+        next: (book) => {
+          this.book = book;
+        }
+      });
+    }
+  }
 
+  // This also has logic to handle multiple book reservations, but the UI only allows one for now.
+  // This is to future-proof for the next feature with the user profile that also has a 'shopping cart'
+  // type of reservation list.
   confirmReservation() {
     if (!this.pickupDate) {
       alert('Te rugăm să selectezi o dată de ridicare!');
       return;
     }
 
-    var reservationList: BookRelationDto[];
+    if (this.bookCount < 1 || this.bookCount > this.book.count) {
+      alert(`Te rugăm să selectezi un număr valid de exemplare (1 - ${this.book.count})!`);
+      return;
+    }
 
-    reservationList = localStorage.getItem("reservationList")!== null
-                    ? [] : JSON.parse(localStorage.getItem("reservationList")!);
-    reservationList.push({isbn: this.book.isbn, count: 1});
-    localStorage.setItem("reservationList", JSON.stringify(reservationList));
+    var reservationList: Map<number, number> = new Map<number, number>();
 
-    const currentUserId = 1; // De preluat din Auth Service în viitor
+    const stored = localStorage.getItem("reservationList");
+    reservationList = stored !== null
+                ? new Map<number, number>(JSON.parse(stored))
+                : new Map<number, number>();
+    reservationList.set(this.book.isbn, this.bookCount);
+    localStorage.setItem("reservationList", JSON.stringify(Array.from(reservationList.values())));
 
-    // this.loanService.reserve(dto, currentUserId, this.pickupDate).subscribe({
-    //   next: () => {
-    //     alert('Rezervare confirmată cu succes!');
-    //     this.close();
-    //   },
-    //   error: (err: any) => {
-    //     const msg = err.error?.message || err.message || 'Eroare la server';
-    //     alert('Eroare: ' + msg);
-    //   }
-    // });
+    const currentUserId = this.authService.getUserId();
+
+    const bookRelations: BookRelationDto[] = [];
+    reservationList.forEach((count, isbn) => {
+      bookRelations.push({ isbn, count });
+    });
+
+    const loanDto: LoanCreateDto = {
+      loanerName: this.authService.getUserName(),
+      bookRelations: bookRelations
+    };
+
+    this.loanService.reserve(loanDto, currentUserId, this.pickupDate).subscribe({
+      next: () => {
+        alert('Rezervare confirmată cu succes!');
+        this.close();
+      },
+      error: (err: any) => {
+        if (err.status === 401) {
+          alert('Eroare: Nu ești autentificat sau ai amenzi ce trebuie plătite.');
+        }
+        else {
+          alert('Eroare la procesarea rezervării. Te rugăm să încerci din nou mai târziu.');
+        }
+      }
+    });
   }
 
   close() {
