@@ -19,6 +19,8 @@ export interface BookReadDto extends Dto {
     count: number;
     status: BookStatus;
     branches?: string[];
+    loanDurationDays?: number;
+    canBeReserved?: boolean;
 }
 
 export interface BookUpdateDto extends Dto {

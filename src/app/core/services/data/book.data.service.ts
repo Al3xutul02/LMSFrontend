@@ -11,6 +11,9 @@ export class BookDataService
     super('book');
   }
 
+  getDetails(isbn: number) {
+    return this.http.get<BookReadDto>(`${this.apiCallUrl}/get-details/${isbn}`);
+  }
   searchBooks(title: string | null, author: string | null, branchId: number | null)
   : Observable<BookReadDto[]> {
     let params = new HttpParams();
