@@ -54,7 +54,8 @@
         @for(book of books; track book.isbn) {
         <tr (mouseenter)="onMouseEnter(book)"
             (mouseleave)="onMouseLeave()"
-            (mousemove)="onMouseMove($event)">
+            (mousemove)="onMouseMove($event)"
+            [routerLink]="['/reserve', book.isbn]" [state]="{ book: book }">
           <td>{{ book.title }}</td>
           <td>{{ book.author }}</td>
           <td>{{ book.branches?.join(', ') }}</td>

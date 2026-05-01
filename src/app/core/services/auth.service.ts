@@ -99,6 +99,32 @@ export class AuthService {
         throw new Error('User role not found.');
     }
 
+    getUserName(): string {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            throw new Error('No token found.');
+        }
+
+        if (this.tokenPayload) {
+            return this.tokenPayload.name;
+        }
+
+        throw new Error('User name not found.');
+    }
+
+    getUserId(): number {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            throw new Error('No token found.');
+        }
+
+        if (this.tokenPayload) {
+            return Number(this.tokenPayload.id);
+        }
+
+        throw new Error('User ID not found.');
+    }
+
     private handleAuthentication(response: LoginResponseDto) {
         localStorage.setItem('token', response.token);
         localStorage.setItem('refreshToken', response.refreshToken);

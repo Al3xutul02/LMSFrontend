@@ -6,13 +6,15 @@ import { BookReadDto } from '../../models/dtos/book.dtos';
 import { BranchReadDto } from '../../models/dtos/branch.dtos';
 import { BookDetailsComponent } from '../book-details/book-details.component';
 import { pipe, Subscription, tap, timer } from 'rxjs';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'home',
   imports: [
     ReactiveFormsModule,
-    BookDetailsComponent
-  ],
+    BookDetailsComponent,
+    RouterLink
+],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
