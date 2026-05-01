@@ -5,11 +5,14 @@ import { AuthGuard } from './core/guards/auth.guard';
 import { UserRole } from './core/models/app.models';
 import { HomeComponent } from './core/pages/home/home.component';
 import { ReserveComponent } from './core/pages/reserve/reserve.component';
+import { ReaderSeeProfileComponent } from './core/pages/reader-see-profile/reader-see-profile.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'home', component: HomeComponent,
         canActivate: [AuthGuard] },
+    { path: 'profile', component: ReaderSeeProfileComponent,
+         canActivate: [AuthGuard] },
     { path: 'reserve/:isbn', component: ReserveComponent,
         canActivate: [AuthGuard]},
     { path: 'dashboard', component: DashboardComponent,

@@ -1,17 +1,18 @@
+/* --- CONTAINER MODAL --- */
 .modal-wrapper {
   background: var(--card-bg);
   border-radius: 20px;
   max-width: 900px;
   margin: 20px auto;
   overflow: hidden;
-  box-shadow: 0 15px 40px rgba(93, 64, 55, 0.15); // Umbră bazată pe text-color
+  box-shadow: 0 15px 40px rgba(93, 64, 55, 0.15);
   font-family: 'Inter', sans-serif;
   border: 1px solid var(--border-color);
 }
 
 .modal-header {
-  background: var(--secondary-bg-color); // #b36a5e
-  color: var(--secondary-text-color); // #fdfaf6
+  background: var(--secondary-bg-color);
+  color: var(--secondary-text-color);
   padding: 14px 24px;
   display: flex;
   justify-content: space-between;
@@ -24,6 +25,7 @@
     font-weight: 600;
     font-size: 1.1rem;
   }
+
   .close-btn { 
     background: none; 
     border: none; 
@@ -38,9 +40,10 @@
   display: flex;
   padding: 32px;
   gap: 40px;
-  background: var(--primary-bg-color); // #fdfaf6
+  background: var(--primary-bg-color);
 }
 
+/* --- DETALII CARTE --- */
 .book-sidebar {
   flex: 0 0 260px;
   .book-cover img {
@@ -66,7 +69,7 @@
     font-size: 28px; 
     margin: 0 0 16px 0; 
     color: var(--primary-text-color);
-    font-family: 'Serif', Georgia, serif; // Un look mai academic/bibliotecă
+    font-family: 'Serif', Georgia, serif;
   }
   
   .description-box {
@@ -86,10 +89,11 @@
   .grid-cell strong { color: var(--secondary-bg-color); }
 }
 
+/* --- CARD REZERVARE --- */
 .reserve-action-card {
   background: var(--card-bg);
   padding: 28px;
-  border-radius: 32px; // Păstrăm rotunjirea cerută
+  border-radius: 32px;
   border: 1px solid var(--border-color);
   box-shadow: 0 4px 12px rgba(0,0,0,0.03);
 
@@ -126,8 +130,8 @@
   .confirm-btn {
     width: 100%;
     height: 56px;
-    background: var(--primary-text-color); // #5d4037
-    color: var(--secondary-text-color); // #fdfaf6
+    background: var(--primary-text-color);
+    color: var(--secondary-text-color);
     border: none;
     border-radius: 16px;
     font-weight: 700;
@@ -142,6 +146,7 @@
   }
 }
 
+/* --- NAVIGATION BAR (Modificat pentru aliniere dreapta fără schimbare HTML) --- */
 .nav-container {
   padding: 20px; 
   background-color: var(--primary-bg-color); 
@@ -149,9 +154,8 @@
   .navbar {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     background-color: var(--card-bg); 
-    padding: 15px 40px;
+    padding: 10px 25px 10px 40px; 
     border-radius: 50px; 
     box-shadow: 0 10px 25px rgba(93, 64, 55, 0.05); 
     border: 1px solid var(--border-color);
@@ -162,6 +166,7 @@
       font-weight: 800;
       color: var(--primary-text-color);
       letter-spacing: -0.5px;
+      margin-right: auto; // Aceasta "împinge" restul elementelor la dreapta
     }
 
     .navbar-menu {
@@ -170,6 +175,9 @@
       margin: 0;
       padding: 0;
       gap: 10px;
+      align-items: center;
+      order: 1; // Apare înaintea profilului
+      margin-right: 15px; // Spațiu între Dashboard și Cercul de profil
 
       li {
         a {
@@ -181,7 +189,6 @@
           font-weight: 600;
           font-size: 0.95rem;
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          border-bottom: none; 
 
           &:hover {
             background-color: var(--primary-bg-color);
@@ -193,6 +200,39 @@
             color: var(--secondary-text-color);  
             box-shadow: 0 4px 12px rgba(179, 106, 94, 0.2);
           }
+        }
+      }
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      order: 2; // Apare la finalul barei
+
+      .profile-circle-btn {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background: var(--primary-bg-color);
+        border: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        padding: 0;
+        color: var(--primary-text-color);
+
+        &:hover {
+          background: var(--secondary-bg-color);
+          color: var(--secondary-text-color);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .user-icon {
+          width: 22px;
+          height: 22px;
         }
       }
     }
