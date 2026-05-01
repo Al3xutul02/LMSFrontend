@@ -1,6 +1,6 @@
 export type UserRole = 'reader' | 'librarian' | 'administrator';
 export type BookStatus = 'in-stock' | 'out-of-stock' | 'discontinued' | 'temporarily-unavailable';
-export type LoanStatus = 'active' | 'overdue' | 'returned';
+export type LoanStatus = 'active' | 'overdue' | 'returned' | 'pending';
 export type FineStatus = 'paid' | 'unpaid' | 'waived';
 export type BookGenre = 'action' | 'adventure' | 'art-and-photography' | 'biography' |
                         'children' | 'coming-of-age' | 'contemporary-fiction' | 'cook-books' |

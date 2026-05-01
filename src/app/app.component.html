@@ -1,9 +1,12 @@
 <div class="app-container">
   
-  <nav-bar></nav-bar>
-
+  @if (authService.loggedIn()) {
+    <nav-bar></nav-bar>
+  }
+ 
   <main class="main-content">
     <app-reader-see-profile></app-reader-see-profile>
   </main>
-
+ 
 </div>
+ 
