@@ -1,10 +1,13 @@
 <div class="app-container">
   
-  <nav-bar></nav-bar>
-
+  @if (authService.loggedIn()) {
+    <nav-bar></nav-bar>
+  }
+ 
   <main class="main-content">
     <reserve [book] = "testBook"></reserve>
     <!-- <router-outlet></router-outlet> -->
   </main>
-
+ 
 </div>
+ 

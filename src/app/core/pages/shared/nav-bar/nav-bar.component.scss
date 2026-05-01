@@ -138,6 +138,59 @@
     &:hover {
       background: var(--secondary-bg-color);
       transform: translateY(-2px);
+.nav-container {
+  padding: 20px; 
+  background-color: var(--primary-bg-color); 
+
+  .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--card-bg); 
+    padding: 15px 40px;
+    border-radius: 50px; 
+    box-shadow: 0 10px 25px rgba(93, 64, 55, 0.05); 
+    border: 1px solid var(--border-color);
+
+    .navbar-brand {
+      font-family: 'EB Garamond', serif; 
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--primary-text-color);
+      letter-spacing: -0.5px;
+    }
+
+    .navbar-menu {
+      list-style: none;
+      display: flex;
+      margin: 0;
+      padding: 0;
+      gap: 10px;
+
+      li {
+        a {
+          font-family: 'Figtree', sans-serif;
+          color: var(--primary-text-color);
+          text-decoration: none;
+          padding: 8px 20px;
+          border-radius: 25px;
+          font-weight: 600;
+          font-size: 0.95rem;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          border-bottom: none; 
+
+          &:hover {
+            background-color: var(--primary-bg-color);
+            color: var(--secondary-bg-color); 
+          }
+
+          &.active {
+            background-color: var(--secondary-bg-color); 
+            color: var(--secondary-text-color);  
+            box-shadow: 0 4px 12px rgba(179, 106, 94, 0.2);
+          }
+        }
+      }
     }
   }
 }

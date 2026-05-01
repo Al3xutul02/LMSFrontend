@@ -1,0 +1,79 @@
+<div class="home-container">
+  <book-details [bookDto]=this.hoveredBook
+       [style.left.px]="hoverPosition().x + 10" 
+       [style.top.px]="hoverPosition().y + 10" 
+       style="position: fixed; z-index: 1000;"></book-details>
+  <div class="search-card">
+    <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+      <div class="main-search-row">
+        <input 
+          type="text" 
+          formControlName="title" 
+          placeholder="Introdu titlul cărții..."
+          class="search-input"
+        >
+        <button type="submit" class="btn-primary">Caută</button>
+        <button type="button" (click)="toggleFilters()" class="btn-secondary">
+          {{ showFilters ? 'Filtre Simple' : 'Filtre Avansate' }}
+        </button>
+      </div>
+
+      @if(showFilters) {
+      <div class="advanced-filters-row">
+        <div class="filter-item">
+          <label>Autor</label>
+          <input type="text" formControlName="author" placeholder="Nume autor">
+        </div>
+        <div class="filter-item">
+          <label>Filială</label>
+          <select formControlName="branchId">
+            <option [value]='null'>Toate Filialele</option>
+            @for(branch of branches; track branch.id) {
+            <option [value]="branch.id">
+              {{ branch.name }}
+            </option>
+            }
+          </select>
+        </div>
+      </div>
+      }
+    </form>
+  </div>
+  @if(books.length > 0) {
+  <div class="results-container">
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>Titlu</th>
+          <th>Autor</th>
+          <th>Filiale</th>
+          <th>Disponibilitate</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for(book of books; track book.isbn) {
+        <tr (mouseenter)="onMouseEnter(book)"
+            (mouseleave)="onMouseLeave()"
+            (mousemove)="onMouseMove($event)">
+          <td>{{ book.title }}</td>
+          <td>{{ book.author }}</td>
+          <td>{{ book.branches?.join(', ') }}</td>
+          <td>
+            <span class="availability-tag" [class.available]="book.status === 'in-stock'" [class.unavailable]="book.status !== 'in-stock'">
+              {{ book.status === 'in-stock' ? 'Disponibil' : 'Indisponibil' }}
+            </span>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  }
+  @else {
+    @if(hasSearched) {
+  <div class="info-msg">
+    Nu s-au găsit rezultate pentru criteriile selectate.
+  </div>
+  }
+  }
+</div>

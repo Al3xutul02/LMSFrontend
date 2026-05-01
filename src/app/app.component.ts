@@ -1,7 +1,8 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavBarComponent } from "./core/pages/shared/nav-bar/nav-bar.component";
-import { ReserveComponent } from "./core/pages/Reserve/reserve.component";
+import { AuthService } from './core/services/auth.service';
+import { BookDetailsComponent } from './core/pages/book-details/book-details.component';
 import { BookReadDto } from './core/models/dtos/book.dtos';
 
 @Component({
@@ -10,20 +11,11 @@ import { BookReadDto } from './core/models/dtos/book.dtos';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
+  protected readonly authService: AuthService = inject(AuthService);
   public readonly title = 'LMSFrontend';
-  testBook: BookReadDto = {
-    isbn: 1024,
-    title: 'Test Book',
-    author: 'Test Author',
-    description: 'This is a test book for demonstration purposes.',
-    genres: ['fantasy', 'action'],
-    count: 5,
-    status: 'in-stock'
 
-  };
-
-  ngOnInit() {
-    localStorage.setItem("reservationList", JSON.stringify([]));
+  async ngOnInit(): Promise<void> {
+    await this.authService.isLoggedIn();
   }
 }
