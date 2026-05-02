@@ -2,8 +2,23 @@
 
   <nav-bar></nav-bar>
 
-  <main class="main-content">
-    <router-outlet></router-outlet>
-  </main>
+  <div class="layout">
+
+    <aside class="side-nav">
+      <nav class="nav-links">
+        <a class="nav-link" routerLink="/pending-loans" routerLinkActive="nav-link-active">
+          Pending Requests
+        </a>
+        <a class="nav-link" routerLink="/add-book" routerLinkActive="nav-link-active">
+          Add Book
+        </a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <router-outlet></router-outlet>
+    </main>
+
+  </div>
 
 </div>

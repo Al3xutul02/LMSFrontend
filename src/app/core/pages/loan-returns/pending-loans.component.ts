@@ -18,14 +18,12 @@ export class PendingLoansComponent implements OnInit {
   constructor(private loanService: LoanDataService) {}
 
   ngOnInit(): void {
-    this.loanService.getAll().subscribe({
+    this.loanService.getItems().subscribe({
       next: (data: LoanReadDto[]) => {
-        // Filter for pending loans only
         this.loans = data.filter((loan: LoanReadDto) => loan.status === 'pending');
-        console.log('Pending loans filtered:', this.loans);
         this.loading = false;
       },
-      error: (err) => {
+      error: (err: unknown) => {
         console.error('Error loading loans:', err);
         this.error = 'Failed to load pending loans.';
         this.loading = false;
@@ -45,24 +43,20 @@ export class PendingLoansComponent implements OnInit {
       bookRelations: loan.bookRelations
     };
 
-    this.loanService.update(updateDto).subscribe({
+    this.loanService.updateItem(updateDto).subscribe({
       next: (success: boolean) => {
-        if (success) {
-          this.loans = this.loans.filter(l => l.id !== id);
-        }
+        if (success) this.loans = this.loans.filter(l => l.id !== id);
       },
-      error: (err) => console.error('Error approving loan:', err)
+      error: (err: unknown) => console.error('Error approving loan:', err)
     });
   }
 
   reject(id: number): void {
-    this.loanService.delete(id).subscribe({
+    this.loanService.deleteItem(id).subscribe({
       next: (success: boolean) => {
-        if (success) {
-          this.loans = this.loans.filter(l => l.id !== id);
-        }
+        if (success) this.loans = this.loans.filter(l => l.id !== id);
       },
-      error: (err) => console.error('Error rejecting loan:', err)
+      error: (err: unknown) => console.error('Error rejecting loan:', err)
     });
   }
 }
