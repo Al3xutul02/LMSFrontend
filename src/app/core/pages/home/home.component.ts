@@ -45,6 +45,8 @@ export class HomeComponent implements OnInit {
         this.branches = res;
       }
     });
+
+    this.onSearch();
   }
 
   toggleFilters(): void {
