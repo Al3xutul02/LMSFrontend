@@ -50,6 +50,12 @@
     <p>{{ error }}</p>
   </div>
 
+  <!-- Toast -->
+  <div *ngIf="toastMessage" class="toast" [class.toast-error]="isErrorToast">
+    <span class="toast-icon">{{ isErrorToast ? '!' : '✓' }}</span>
+    {{ toastMessage }}
+  </div>
+
   <div *ngIf="!loading && !error">
 
     <!-- Stat Card -->
@@ -85,6 +91,7 @@
         <tbody>
           <tr *ngFor="let loan of loans; let i = index"
               class="loan-row"
+              [class.row-removing]="isRemoving(loan.id)"
               [style.animation-delay]="i * 55 + 'ms'">
             <td class="cell-id">#{{ loan.id }}</td>
             <td class="cell-user">
@@ -104,8 +111,12 @@
               </span>
             </td>
             <td>
-              <button (click)="markReturned(loan)" class="btn-return ripple-btn">
-                Mark Returned
+              <button (click)="markReturned(loan)"
+                      class="btn-return ripple-btn"
+                      [class.btn-loading]="isProcessing(loan.id)"
+                      [disabled]="isProcessing(loan.id)">
+                <span *ngIf="isProcessing(loan.id)" class="btn-spinner"></span>
+                <span *ngIf="!isProcessing(loan.id)">Mark Returned</span>
               </button>
             </td>
           </tr>

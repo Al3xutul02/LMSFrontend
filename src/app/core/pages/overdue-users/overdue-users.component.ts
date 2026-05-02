@@ -14,8 +14,12 @@ export class OverdueUsersComponent implements OnInit {
   loans: LoanReadDto[] = [];
   loading = true;
   error: string | null = null;
+  successMessage: string | null = null;
 
-  // Animated counter
+  // Tracks which loan IDs are being processed or animating out
+  processingIds = new Set<number>();
+  removingIds   = new Set<number>();
+
   displayCount = 0;
 
   constructor(private loanService: LoanDataService) {}
@@ -50,11 +54,14 @@ export class OverdueUsersComponent implements OnInit {
   daysOverdue(dueDate: Date): number {
     const due = new Date(dueDate);
     const today = new Date();
-    const diff = today.getTime() - due.getTime();
-    return Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
+    return Math.max(0, Math.floor((today.getTime() - due.getTime()) / (1000 * 60 * 60 * 24)));
   }
 
   markReturned(loan: LoanReadDto): void {
+    if (this.processingIds.has(loan.id)) return;
+
+    this.processingIds.add(loan.id);
+
     const updateDto: LoanUpdateDto = {
       id: loan.id,
       issueDate: loan.issueDate,
@@ -65,12 +72,39 @@ export class OverdueUsersComponent implements OnInit {
 
     this.loanService.updateItem(updateDto).subscribe({
       next: (success: boolean) => {
+        this.processingIds.delete(loan.id);
         if (success) {
-          this.loans = this.loans.filter(l => l.id !== loan.id);
-          this.displayCount = this.loans.length;
+          // Trigger exit animation, then remove from list
+          this.removingIds.add(loan.id);
+          setTimeout(() => {
+            this.loans = this.loans.filter(l => l.id !== loan.id);
+            this.removingIds.delete(loan.id);
+            this.displayCount = this.loans.length;
+            this.showToast(`Loan #${loan.id} marked as returned.`);
+          }, 380);
         }
       },
-      error: (err: unknown) => console.error('Error updating loan:', err)
+      error: (err: unknown) => {
+        console.error('Error updating loan:', err);
+        this.processingIds.delete(loan.id);
+        this.showToast('Failed to update loan. Please try again.', true);
+      }
     });
+  }
+
+  isProcessing(id: number): boolean { return this.processingIds.has(id); }
+  isRemoving(id: number):   boolean { return this.removingIds.has(id); }
+
+  private showToast(message: string, isError = false): void {
+    this.successMessage = (isError ? 'error:' : '') + message;
+    setTimeout(() => { this.successMessage = null; }, 3500);
+  }
+
+  get toastMessage(): string | null {
+    return this.successMessage?.replace(/^error:/, '') ?? null;
+  }
+
+  get isErrorToast(): boolean {
+    return this.successMessage?.startsWith('error:') ?? false;
   }
 }
