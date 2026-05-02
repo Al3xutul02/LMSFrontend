@@ -6,11 +6,12 @@ import { Observable, throwError, of, firstValueFrom, switchMap } from 'rxjs';
 import { tap, catchError } from "rxjs/operators";
 import { UserRole } from "../models/app.models";
 import { TokenPayload } from "../models/jwt-payload";
+import { env } from "../../../environment";
 
 @Injectable({ providedIn: 'root'})
 export class AuthService {
     private http: HttpClient = inject(HttpClient);
-    private webApiUrl: string = 'https://localhost:7076/auth';
+    private webApiUrl: string = `${env.webApiUrl}/${env.endpointMap['auth']}`;
     private tokenPayload: TokenPayload | null = null;
 
     readonly loggedIn = signal(false);

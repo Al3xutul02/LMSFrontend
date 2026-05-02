@@ -1,11 +1,12 @@
 import { inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { env } from '../../../../../environment';
 
 export class DataService<TCreateDto, TReadDto, TUpdateDto> {
   protected http: HttpClient = inject(HttpClient);
 
-  protected webApiUrl: string = 'https://localhost:7076';
+  protected webApiUrl: string = env.webApiUrl;
   protected controllerMapping: string = '';
   protected apiCallUrl: string;
 

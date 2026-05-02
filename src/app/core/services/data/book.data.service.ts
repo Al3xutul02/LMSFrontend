@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DataService } from './generic/data.service';
 import { BookCreateDto, BookReadDto, BookUpdateDto } from '../../models/dtos/book.dtos';
+import { env } from '../../../../environment';
 import { Observable } from 'rxjs/internal/Observable';
 import { HttpParams } from '@angular/common/http';
 
@@ -8,7 +9,7 @@ import { HttpParams } from '@angular/common/http';
 export class BookDataService 
     extends DataService<BookCreateDto, BookReadDto, BookUpdateDto> {
   constructor() {
-    super('book');
+    super(env.endpointMap['book']);
   }
 
   getDetails(isbn: number) {

@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { DataService } from './generic/data.service';
 import { LoanCreateDto, LoanReadDto, LoanUpdateDto } from '../../models/dtos/loan.dtos';
+import { env } from '../../../../environment';
 import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class LoanDataService extends DataService<LoanCreateDto, LoanReadDto, LoanUpdateDto> {
   
   constructor() {
-    super('Loan');
+    super(env.endpointMap['loan']);
   }
 
   /**

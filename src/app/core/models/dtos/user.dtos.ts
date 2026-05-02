@@ -12,6 +12,7 @@ export interface UserReadDto extends Dto {
     name: string;
     email: string;
     role: UserRole;
+    imagePath: string;
     employeeId?: number;
     branchId?: number;
 } 
@@ -21,4 +22,5 @@ export interface UserUpdateDto extends Dto {
     name: string;
     email: string;
     password: string;
+    imagePath: string;
 }
