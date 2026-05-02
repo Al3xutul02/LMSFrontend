@@ -8,6 +8,7 @@ export interface BookCreateDto extends Dto {
     genres?: BookGenre[];
     count: number;
     status: BookStatus;
+    imagePath: string;
 }
 
 export interface BookReadDto extends Dto {
@@ -18,6 +19,7 @@ export interface BookReadDto extends Dto {
     genres?: BookGenre[];
     count: number;
     status: BookStatus;
+    imagePath: string;
     branches?: string[];
     loanDurationDays?: number;
     canBeReserved?: boolean;
@@ -31,6 +33,7 @@ export interface BookUpdateDto extends Dto {
     genres?: BookGenre[];
     count: number;
     status: BookStatus;
+    imagePath: string;
 }
 
 export interface BookRelationDto extends Dto {
