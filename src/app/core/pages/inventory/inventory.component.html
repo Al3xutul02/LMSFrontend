@@ -31,6 +31,23 @@
       </div>
     </div>
 
+    <!-- Availability Progress Bar -->
+    <div class="progress-card" *ngIf="totalBooks > 0">
+      <div class="progress-header">
+        <span class="progress-label">Availability</span>
+        <span class="progress-pct">{{ ((booksAvailable / totalBooks) * 100).toFixed(0) }}% available</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill"
+             [style.width.%]="(booksAvailable / totalBooks) * 100">
+        </div>
+      </div>
+      <div class="progress-legend">
+        <span class="legend-dot legend-available"></span> Available ({{ booksAvailable }})
+        <span class="legend-dot legend-loaned" style="margin-left:1rem"></span> Loaned out ({{ totalBooks - booksAvailable }})
+      </div>
+    </div>
+
     <!-- Actions Card -->
     <div class="actions-card">
       <h3 class="actions-title">Quick Actions</h3>

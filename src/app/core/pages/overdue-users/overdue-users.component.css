@@ -1,3 +1,58 @@
+/* ── Skeleton shimmer ────────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position:  600px 0; }
+}
+
+.skel {
+  border-radius: 6px;
+  background: linear-gradient(90deg,
+    color-mix(in srgb, var(--border-color), transparent 20%) 25%,
+    color-mix(in srgb, var(--card-bg), var(--accent) 15%)    50%,
+    color-mix(in srgb, var(--border-color), transparent 20%) 75%
+  );
+  background-size: 600px 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+  height: 14px;
+}
+
+.skel-label  { width: 160px; margin-bottom: 0.5rem; }
+.skel-number { width: 60px; height: 42px; border-radius: 8px; }
+.skel-badge  { width: 120px; height: 32px; border-radius: 50px; }
+.skel-sm     { width: 40px; }
+.skel-md     { width: 100px; }
+.skel-avatar { width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0; }
+.skel-pill   { width: 72px; height: 22px; border-radius: 50px; }
+.skel-btn    { width: 110px; height: 30px; border-radius: 50px; }
+
+.skel-user    { display: flex; align-items: center; gap: 0.6rem; }
+.skel-stat-card { animation: none; }
+
+.skeleton-row td { padding: 14px 18px; border-bottom: 1px solid var(--border-color); }
+.skeleton-row:last-child td { border-bottom: none; }
+
+/* ── Ripple button ───────────────────────────────────────────────── */
+.ripple-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.28);
+  border-radius: inherit;
+  transform: scale(0);
+  opacity: 1;
+}
+
+.ripple-btn:active::after {
+  transform: scale(2.5);
+  opacity: 0;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
 /* ── Keyframes ───────────────────────────────────────────────────── */
 @keyframes fadeSlideUp {
   from { opacity: 0; transform: translateY(18px); }
@@ -185,7 +240,9 @@
 .loan-row:last-child td { border-bottom: none; }
 
 .loan-row:hover {
-  background: color-mix(in srgb, var(--primary-bg-color), transparent 30%);
+  background: color-mix(in srgb, #f8d7da, transparent 60%);
+  transform: translateX(2px);
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
 /* ── Cell variants ──────────────────────────────────────────────── */

@@ -8,10 +8,41 @@
     </div>
   </div>
 
-  <!-- Loading State -->
-  <div *ngIf="loading" class="state-container loading-state">
-    <div class="spinner"></div>
-    <p>Loading overdue loans…</p>
+  <!-- Skeleton Loading -->
+  <div *ngIf="loading">
+    <div class="stat-card skel-stat-card">
+      <div class="stat-main">
+        <div class="skel skel-label"></div>
+        <div class="skel skel-number"></div>
+      </div>
+      <div class="skel skel-badge"></div>
+    </div>
+    <div class="table-card">
+      <table class="loans-table">
+        <thead>
+          <tr>
+            <th>ID</th><th>User</th><th>Issue Date</th><th>Due Date</th>
+            <th>Days Overdue</th><th>Books</th><th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let i of [1,2,3,4]" class="skeleton-row">
+            <td><div class="skel skel-sm"></div></td>
+            <td>
+              <div class="skel-user">
+                <div class="skel skel-avatar"></div>
+                <div class="skel skel-md"></div>
+              </div>
+            </td>
+            <td><div class="skel skel-md"></div></td>
+            <td><div class="skel skel-md"></div></td>
+            <td><div class="skel skel-pill"></div></td>
+            <td><div class="skel skel-pill"></div></td>
+            <td><div class="skel skel-btn"></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <!-- Error State -->
@@ -54,7 +85,7 @@
         <tbody>
           <tr *ngFor="let loan of loans; let i = index"
               class="loan-row"
-              [style.animation-delay]="i * 60 + 'ms'">
+              [style.animation-delay]="i * 55 + 'ms'">
             <td class="cell-id">#{{ loan.id }}</td>
             <td class="cell-user">
               <span class="user-avatar">{{ (loan.loanerName || 'N')[0].toUpperCase() }}</span>
@@ -73,7 +104,7 @@
               </span>
             </td>
             <td>
-              <button (click)="markReturned(loan)" class="btn-return">
+              <button (click)="markReturned(loan)" class="btn-return ripple-btn">
                 Mark Returned
               </button>
             </td>
