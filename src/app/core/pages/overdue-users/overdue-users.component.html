@@ -1,0 +1,87 @@
+<div class="overdue-container">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div>
+      <h2>Overdue Users</h2>
+      <p class="header-subtitle">Users who have passed their loan return deadline</p>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="state-container loading-state">
+    <div class="spinner"></div>
+    <p>Loading overdue loans…</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="state-container error-state">
+    <p>{{ error }}</p>
+  </div>
+
+  <div *ngIf="!loading && !error">
+
+    <!-- Stat Card -->
+    <div class="stat-card">
+      <div class="stat-main">
+        <span class="stat-label">Users Past Return Deadline</span>
+        <span class="stat-value">{{ displayCount }}</span>
+      </div>
+      <div class="stat-badge" [class.stat-badge-clear]="loans.length === 0">
+        {{ loans.length === 0 ? 'All clear' : 'Requires attention' }}
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="loans.length === 0" class="state-container empty-state">
+      <p>No overdue loans — all users are on time!</p>
+    </div>
+
+    <!-- Table -->
+    <div *ngIf="loans.length > 0" class="table-card">
+      <table class="loans-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>User</th>
+            <th>Issue Date</th>
+            <th>Due Date</th>
+            <th>Days Overdue</th>
+            <th>Books</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let loan of loans; let i = index"
+              class="loan-row"
+              [style.animation-delay]="i * 60 + 'ms'">
+            <td class="cell-id">#{{ loan.id }}</td>
+            <td class="cell-user">
+              <span class="user-avatar">{{ (loan.loanerName || 'N')[0].toUpperCase() }}</span>
+              {{ loan.loanerName || 'N/A' }}
+            </td>
+            <td>{{ loan.issueDate | date:'MMM d, y' }}</td>
+            <td class="cell-due">{{ loan.dueDate | date:'MMM d, y' }}</td>
+            <td>
+              <span class="days-badge" [class.days-critical]="daysOverdue(loan.dueDate) > 14">
+                {{ daysOverdue(loan.dueDate) }} day{{ daysOverdue(loan.dueDate) !== 1 ? 's' : '' }}
+              </span>
+            </td>
+            <td>
+              <span class="books-pill">
+                {{ loan.bookRelations?.length || 0 }} book{{ (loan.bookRelations?.length || 0) !== 1 ? 's' : '' }}
+              </span>
+            </td>
+            <td>
+              <button (click)="markReturned(loan)" class="btn-return">
+                Mark Returned
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+</div>
