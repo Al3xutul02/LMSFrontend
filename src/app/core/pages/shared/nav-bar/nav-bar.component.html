@@ -1,8 +1,16 @@
-<div class="nav-container">
-    <nav class="navbar">
-        <div class="navbar-brand">Library Management System</div>
-        <ul class="navbar-menu">
-            <li><a routerLink="/">Home</a></li>
-        </ul>
-    </nav>
+<div class="nav-wrapper">
+  <nav class="navbar">
+    <span class="navbar-brand">Library Management System</span>
+  </nav>
+
+  <div class="tab-bar">
+    <a class="tab" routerLink="/pending-loans" routerLinkActive="tab-active">
+      <span class="tab-icon">📋</span>
+      Pending Requests
+    </a>
+    <a class="tab" routerLink="/add-book" routerLinkActive="tab-active">
+      <span class="tab-icon">📖</span>
+      Add Book
+    </a>
+  </div>
 </div>
