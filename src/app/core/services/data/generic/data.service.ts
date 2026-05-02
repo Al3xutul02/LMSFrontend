@@ -1,40 +1,51 @@
-import { inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Dto } from '../../../models/app.models';
 
-export class DataService<TCreateDto, TReadDto, TUpdateDto> {
-  protected http: HttpClient = inject(HttpClient);
+const BASE_URL = 'http://localhost:5266';
 
-  protected webApiUrl: string = 'https://localhost:7076';
-  protected controllerMapping: string = '';
-  protected apiCallUrl: string;
+/**
+ * Generic base service providing CRUD operations for a given entity.
+ * Subclasses pass the entity route prefix (e.g. 'loan', 'branch') to super().
+ *
+ * Backend route conventions:
+ *   GET    /{entity}/get-all
+ *   GET    /{entity}/get?id={id}
+ *   POST   /{entity}/post
+ *   PUT    /{entity}/put
+ *   DELETE /{entity}/delete?id={id}
+ */
+@Injectable()
+export abstract class DataService<
+  TCreate extends Dto,
+  TRead extends Dto,
+  TUpdate extends Dto
+> {
+  protected readonly http = inject(HttpClient);
+  private readonly baseUrl: string;
 
-  constructor(controllerMapping: string) {
-    this.controllerMapping = controllerMapping;
-    this.apiCallUrl = `${this.webApiUrl}/${this.controllerMapping}`;
+  constructor(entity: string) {
+    this.baseUrl = `${BASE_URL}/${entity}`;
   }
 
-  // GET requests
-  getItems(): Observable<TReadDto[]> {
-    return this.http.get<TReadDto[]>(`${this.apiCallUrl}/get-all`);
+  getAll(): Observable<TRead[]> {
+    return this.http.get<TRead[]>(`${this.baseUrl}/get-all`);
   }
 
-  getItemById(id: number): Observable<TReadDto> {
-    return this.http.get<TReadDto>(`${this.apiCallUrl}/get/${id}`);
+  getById(id: number): Observable<TRead> {
+    return this.http.get<TRead>(`${this.baseUrl}/get`, { params: { id } });
   }
 
-  // POST request
-  addItem(item: TCreateDto): Observable<boolean> {
-    return this.http.post<boolean>(`${this.apiCallUrl}/post`, item);
+  create(dto: TCreate): Observable<boolean> {
+    return this.http.post<boolean>(`${this.baseUrl}/post`, dto);
   }
 
-  // PUT request
-  updateItem(item: TUpdateDto): Observable<boolean> {
-    return this.http.put<boolean>(`${this.apiCallUrl}/put`, item);
+  update(dto: TUpdate): Observable<boolean> {
+    return this.http.put<boolean>(`${this.baseUrl}/put`, dto);
   }
 
-  // DELETE request
-  deleteItem(id: number): Observable<boolean> {
-    return this.http.delete<boolean>(`${this.apiCallUrl}/delete/${id}`);
+  delete(id: number): Observable<boolean> {
+    return this.http.delete<boolean>(`${this.baseUrl}/delete`, { params: { id } });
   }
 }

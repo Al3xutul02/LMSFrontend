@@ -23,7 +23,7 @@ export class PendingLoansComponent implements OnInit {
         this.loans = data.filter((loan: LoanReadDto) => loan.status === 'pending');
         this.loading = false;
       },
-      error: (err) => {
+      error: (err: unknown) => {
         console.error('Error loading loans:', err);
         this.error = 'Failed to load pending loans.';
         this.loading = false;
@@ -47,7 +47,7 @@ export class PendingLoansComponent implements OnInit {
       next: (success: boolean) => {
         if (success) this.loans = this.loans.filter(l => l.id !== id);
       },
-      error: (err) => console.error('Error approving loan:', err)
+      error: (err: unknown) => console.error('Error approving loan:', err)
     });
   }
 
@@ -56,7 +56,7 @@ export class PendingLoansComponent implements OnInit {
       next: (success: boolean) => {
         if (success) this.loans = this.loans.filter(l => l.id !== id);
       },
-      error: (err) => console.error('Error rejecting loan:', err)
+      error: (err: unknown) => console.error('Error rejecting loan:', err)
     });
   }
 }
