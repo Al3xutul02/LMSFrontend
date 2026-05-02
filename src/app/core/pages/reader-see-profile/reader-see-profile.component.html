@@ -34,7 +34,7 @@
        (mouseleave)="onMouseLeave()"
        (mousemove)="onMouseMove($event)"> <div class="book-info">
       <span class="book-title"><strong>{{ entry.title }}</strong></span>
-      <span class="book-author" *ngIf="entry.author"> de {{ entry.author }}</span>
+      <span class="book-author" *ngIf="entry.author"> by {{ entry.author }}</span>
     </div>
 
     <span class="due-date" [class.overdue]="isOverdue(entry.dueDate)">
