@@ -22,45 +22,47 @@ export class ReaderSeeProfileComponent implements OnInit {
 
   userProfile?: UserReadDto;
   borrowedCount: number = 0;
-  returnList: LoanReadDto[] = []; // Folosim DTO-ul real de Loan
+  returnList: LoanReadDto[] = []; 
   recommendations: any[] = [];
   isFavorite: boolean = false;
 
   ngOnInit(): void {
     const userId = this.authService.getUserId();
     
-    // 1. Încărcăm profilul utilizatorului
+    // 1. Încărcăm profilul utilizatorului folosind ID-ul din sesiune
     this.userDataService.getUserProfile(userId).subscribe({
       next: (data) => {
         this.userProfile = data;
-        // 2. După ce avem profilul, încărcăm datele specifice activității
+        // 2. Încărcăm datele de împrumut folosind același userId
         this.loadBorrowingData(userId);
         this.loadRecommendations();
       },
-      error: (err) => console.error('Eroare la încărcarea profilului:', err)
+      error: (err: any) => console.error('Eroare la încărcarea profilului:', err)
     });
+    console.log("ID din Token:", userId);
   }
 
-  loadBorrowingData(userId: number) {
-    // Apelăm metoda creată recent în backend pentru a lua împrumuturile reale
-    this.loanService.getUserLoans(userId).subscribe({
-      next: (loans) => {
-        this.returnList = loans;
-        // borrowedCount nu mai este 6, ci lungimea listei din baza de date
-        this.borrowedCount = loans.length;
-      },
-      error: (err) => console.error('Eroare la încărcarea împrumuturilor:', err)
-    });
-  }
+ loadBorrowingData(userId: number) {
+  this.loanService.getUserLoans(userId).subscribe({
+    next: (loans: LoanReadDto[]) => {
+      this.returnList = loans;
+      
+      // Calculăm suma tuturor cărților din toate împrumuturile
+      this.borrowedCount = loans.reduce((acc, loan) => {
+        // Presupunem că fiecare loan are o listă de relații cu cărțile
+        const booksInLoan = loan.bookRelations ? loan.bookRelations.reduce((sum, br) => sum + br.count, 0) : 0;
+        return acc + booksInLoan;
+      }, 0);
+    }
+  });
+}
 
   loadRecommendations() {
-    // Putem lua recomandări reale (ex: ultimele cărți adăugate în bibliotecă)
-    this.bookService. searchBooks(null, null, null).subscribe({
+    this.bookService.searchBooks(null, null, null).subscribe({
       next: (books) => {
-        // Luăm doar primele 2 pentru secțiunea de recomandări
         this.recommendations = books.slice(0, 2);
       },
-      error: (err) => console.error('Eroare la încărcarea recomandărilor:', err)
+      error: (err: any) => console.error('Eroare la încărcarea recomandărilor:', err)
     });
   }
 
@@ -73,6 +75,5 @@ export class ReaderSeeProfileComponent implements OnInit {
   }
 
   navigateToCatalog() {
-    // Aici poți adăuga navigarea reală: this.router.navigate(['/catalog']);
   }
 }

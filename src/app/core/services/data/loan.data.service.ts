@@ -35,6 +35,6 @@ export class LoanDataService extends DataService<LoanCreateDto, LoanReadDto, Loa
   }
 
   getUserLoans(userId: number): Observable<LoanReadDto[]> {
-  return this.http.get<LoanReadDto[]>(`${this.apiCallUrl}/Loan/user-loans/${userId}`);
+  return this.http.get<LoanReadDto[]>(`${this.apiCallUrl}/user-loans/${userId}`);
 }
 }
