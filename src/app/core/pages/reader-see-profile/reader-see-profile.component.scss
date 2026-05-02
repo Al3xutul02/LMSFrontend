@@ -60,6 +60,44 @@
       margin-bottom: 1.5rem;
     }
 
+    // --- MODIFICARE AICI PENTRU ALINIERE TITLU + DATA ---
+    .return-list {
+      .list-row {
+        display: flex;
+        justify-content: space-between; // Împinge data la finalul rândului
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--border-color);
+
+        .book-details {
+          display: flex;
+          flex-direction: column; // Titlul și autorul rămân grupate în stânga
+          gap: 4px;
+
+          .book-title {
+            font-size: 1.1rem;
+            color: var(--primary-text-color);
+          }
+
+          .book-author {
+            font-size: 0.9rem;
+            color: #666;
+          }
+        }
+
+        .due-date {
+          font-weight: 600;
+          color: #1a7e49;
+          white-space: nowrap; // Previne ruperea datei pe două rânduri
+          
+          &.overdue {
+            color: #d32f2f;
+          }
+        }
+      }
+    }
+    // --------------------------------------------------
+
     .recommendations-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;

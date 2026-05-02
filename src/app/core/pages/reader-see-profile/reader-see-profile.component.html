@@ -8,10 +8,6 @@
       
       <div class="borrowing-stats">
         <div class="stat-item box-stat">
-          <span class="stat-label">Books Borrowed</span>
-          <span class="stat-number" [class.limit-reached]="borrowedCount >= 10">{{ borrowedCount }}</span>
-        </div>
-        <div class="stat-item box-stat">
           <span class="stat-label">Books to Return</span>
           <span class="stat-number">{{ returnList.length }}</span>
         </div>
@@ -33,7 +29,6 @@
       <div class="block-header">
         <h3>Books to Return</h3>
         <div class="genre-favorite">
-          <span>Genre: <strong>Mystery</strong></span>
           <button class="favorite-toggle" (click)="toggleFavoriteGenre()">
             <i [class]="isFavorite ? 'fas fa-star' : 'far fa-star'"></i>
           </button>
@@ -41,12 +36,19 @@
       </div>
 
       <div class="return-list">
-        <div class="list-row" *ngFor="let book of returnList">
-          <span class="book-title">{{ book.title }}</span>
-          <span class="due-date" [class.overdue]="isOverdue(book.dueDate)">
-            {{ book.dueDate | date:'MMMM d, yyyy' }}
-          </span>
+        <div class="list-row" *ngFor="let entry of loanBookEntries">
+          <div class="book-info">
+            <span class="book-title">{{ entry.title }}</span>
+            <span class="book-author">{{ entry.author }}</span>
+          </div>
+            <span class="due-date" [class.overdue]="isOverdue(entry.dueDate)">
+              Due date:  {{ entry.dueDate | date:'MMMM d, yyyy' }} 
+            </span>
         </div>
+
+        <p *ngIf="loanBookEntries.length === 0" class="no-loans">
+          Nu ai cărți de returnat.
+        </p>
       </div>
     </div>
 

@@ -6,6 +6,16 @@ import { AuthService } from '../../services/auth.service';
 import { LoanDataService } from '../../../core/services/data/loan.data.service';
 import { BookDataService } from '../../../core/services/data/book.data.service';
 import { LoanReadDto } from '../../../core/models/dtos/loan.dtos';
+import { BookReadDto } from '../../../core/models/dtos/book.dtos';
+import { forkJoin, of } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
+
+// Model local pentru afișare
+export interface LoanBookEntry {
+  dueDate: Date;
+  title: string;
+  author: string;
+}
 
 @Component({
   selector: 'app-reader-see-profile',
@@ -22,38 +32,66 @@ export class ReaderSeeProfileComponent implements OnInit {
 
   userProfile?: UserReadDto;
   borrowedCount: number = 0;
-  returnList: LoanReadDto[] = []; 
+  returnList: LoanReadDto[] = [];
+  loanBookEntries: LoanBookEntry[] = []; // <-- NOU: lista îmbogățită pentru afișare
   recommendations: any[] = [];
   isFavorite: boolean = false;
 
   ngOnInit(): void {
     const userId = this.authService.getUserId();
-    
-    // 1. Încărcăm profilul utilizatorului folosind ID-ul din sesiune
+
     this.userDataService.getUserProfile(userId).subscribe({
       next: (data) => {
         this.userProfile = data;
-        // 2. Încărcăm datele de împrumut folosind același userId
         this.loadBorrowingData(userId);
         this.loadRecommendations();
       },
       error: (err: any) => console.error('Eroare la încărcarea profilului:', err)
     });
-    console.log("ID din Token:", userId);
   }
 
- loadBorrowingData(userId: number) {
-  this.loanService.getUserLoans(userId).subscribe({
-    next: (loans: LoanReadDto[]) => {
-      this.returnList = loans;
+  loadBorrowingData(userId: number) {
+  this.loanService.getUserLoans(userId).pipe(
+    switchMap((loans: LoanReadDto[]) => {
+      console.log('Loans primite:', loans);
+      console.log('BookRelations din primul loan:', loans[0]?.bookRelations);
       
-      // Calculăm suma tuturor cărților din toate împrumuturile
+      this.returnList = loans;
       this.borrowedCount = loans.reduce((acc, loan) => {
-        // Presupunem că fiecare loan are o listă de relații cu cărțile
-        const booksInLoan = loan.bookRelations ? loan.bookRelations.reduce((sum, br) => sum + br.count, 0) : 0;
-        return acc + booksInLoan;
+        return acc + (loan.bookRelations?.reduce((s, br) => s + br.count, 0) ?? 0);
       }, 0);
-    }
+
+      if (loans.length === 0) return of([]);
+
+      const entries$ = loans.flatMap(loan =>
+        (loan.bookRelations ?? []).map(br => {
+          console.log('Fetch pentru ISBN:', br.isbn);
+          return this.bookService.getDetails(br.isbn).pipe(
+            catchError((err) => {
+              console.error('Eroare getDetails pentru ISBN', br.isbn, err);
+              return of(null);
+            }),
+            switchMap((book: BookReadDto | null) => {
+              console.log('Book primit pentru ISBN', br.isbn, ':', book);
+              return of({
+                dueDate: loan.dueDate,
+                title: book?.title ?? `ISBN: ${br.isbn}`,
+                author: book?.author ?? 'Autor necunoscut'
+              } as LoanBookEntry);
+            })
+          );
+        })
+      );
+
+      console.log('Număr entries$:', entries$.length);
+      return entries$.length > 0 ? forkJoin(entries$) : of([]);
+    })
+  ).subscribe({
+    next: (entries) => {
+      console.log('Entries finale:', entries);
+      this.loanBookEntries = entries as LoanBookEntry[];
+    },
+    error: (err) => console.error('Eroare pipeline:', err)
   });
 }
 
@@ -62,7 +100,7 @@ export class ReaderSeeProfileComponent implements OnInit {
       next: (books) => {
         this.recommendations = books.slice(0, 2);
       },
-      error: (err: any) => console.error('Eroare la încărcarea recomandărilor:', err)
+      error: (err: any) => console.error('Eroare la recomandări:', err)
     });
   }
 
@@ -74,6 +112,5 @@ export class ReaderSeeProfileComponent implements OnInit {
     this.isFavorite = !this.isFavorite;
   }
 
-  navigateToCatalog() {
-  }
+  navigateToCatalog() {}
 }
