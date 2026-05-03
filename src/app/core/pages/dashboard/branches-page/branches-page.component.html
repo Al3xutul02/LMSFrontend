@@ -4,150 +4,241 @@
   <div class="page-header">
     <div class="page-title">
       <h1>Branches</h1>
-      <span class="branch-count" *ngIf="!loading">{{ branches.length }} total</span>
+      @if (!loading) {
+        <span class="branch-count">{{ branches.length }} total</span>
+      }
     </div>
     <button class="action-btn primary" (click)="openAdd()">+ Add Branch</button>
   </div>
  
   <!-- Loading -->
-  <div *ngIf="loading" class="state-box">
-    <span class="state-icon">⏳</span>
-    <p>Loading branches…</p>
-  </div>
+  @if (loading) {
+    <div class="state-box">
+      <span class="state-icon">⏳</span>
+      <p>Loading branches…</p>
+    </div>
+  }
  
   <!-- Error -->
-  <div *ngIf="error && !loading" class="state-box error">
-    <span class="state-icon">⚠️</span>
-    <p>{{ error }}</p>
-    <button class="action-btn outline" (click)="loadAll()">Retry</button>
-  </div>
+  @if (error && !loading) {
+    <div class="state-box error">
+      <span class="state-icon">⚠️</span>
+      <p>{{ error }}</p>
+      <button class="action-btn outline" (click)="loadAll()">Retry</button>
+    </div>
+  }
  
   <!-- Branches List -->
-  <div *ngIf="!loading && !error" class="branches-list">
-    <div *ngIf="branches.length === 0" class="state-box">
-      <span class="state-icon">🏛️</span>
-      <p>No branches yet. Add one to get started.</p>
-    </div>
- 
-    <div
-      *ngFor="let branch of branches"
-      class="branch-card"
-      [class.expanded]="expandedId === branch.id">
- 
-      <!-- Row (always visible) -->
-      <div class="branch-row" (click)="toggleExpand(branch.id)">
-        <div class="row-left">
-          <span class="expand-chevron" [class.open]="expandedId === branch.id">›</span>
-          <div class="branch-name">{{ branch.name }}</div>
-          <div class="branch-address">{{ branch.address }}</div>
+  @if (!loading && !error) {
+    <div class="branches-list">
+      @if (branches.length === 0) {
+        <div class="state-box">
+          <span class="state-icon">🏛️</span>
+          <p>No branches yet. Add one to get started.</p>
         </div>
-        <div class="row-right">
-          <span class="status-badge" [class.open]="branch.isOpen" [class.closed]="!branch.isOpen">
-            {{ branch.isOpen ? 'Open' : 'Closed' }}
-          </span>
-        </div>
-      </div>
+      }
  
-      <!-- Expanded Detail Panel -->
-      <div class="branch-detail" *ngIf="expandedId === branch.id">
-        <div class="detail-grid">
-          <div class="detail-item">
-            <span class="detail-label">ID</span>
-            <span class="detail-value">#{{ branch.id }}</span>
-          </div>
-          <div class="detail-item">
-            <span class="detail-label">Name</span>
-            <span class="detail-value">{{ branch.name }}</span>
-          </div>
-          <div class="detail-item">
-            <span class="detail-label">Address</span>
-            <span class="detail-value">{{ branch.address }}</span>
-          </div>
-          <div class="detail-item">
-            <span class="detail-label">Status</span>
-            <span class="status-badge" [class.open]="branch.isOpen" [class.closed]="!branch.isOpen">
-              {{ branch.isOpen ? 'Open' : 'Closed' }}
-            </span>
-          </div>
-        </div>
+      @for (branch of branches; track branch.id) {
+        <div class="branch-card" [class.expanded]="expandedId === branch.id">
  
-        <!-- Librarians -->
-        <div class="librarians-section">
-          <span class="detail-label">Librarians</span>
-          <div class="librarians-list">
-            <ng-container *ngIf="getLibrarians(branch).length > 0; else noLibrarians">
-              <div class="librarian-chip" *ngFor="let lib of getLibrarians(branch)">
-                <span class="lib-avatar">{{ lib.name.charAt(0).toUpperCase() }}</span>
-                <span class="lib-name">{{ lib.name }}</span>
+          <!-- Row -->
+          <div class="branch-row" (click)="toggleExpand(branch.id)">
+            <div class="row-left">
+              <span class="expand-chevron" [class.open]="expandedId === branch.id">›</span>
+              <div class="branch-name">{{ branch.name }}</div>
+              <div class="branch-address">{{ branch.address }}</div>
+            </div>
+            <div class="row-right">
+              <span class="status-badge" [class.open]="branch.isOpen" [class.closed]="!branch.isOpen">
+                {{ branch.isOpen ? 'Open' : 'Closed' }}
+              </span>
+            </div>
+          </div>
+ 
+          <!-- Expanded Detail Panel -->
+          @if (expandedId === branch.id) {
+            <div class="branch-detail">
+              <div class="detail-grid">
+                <div class="detail-item">
+                  <span class="detail-label">ID</span>
+                  <span class="detail-value">#{{ branch.id }}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Name</span>
+                  <span class="detail-value">{{ branch.name }}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Address</span>
+                  <span class="detail-value">{{ branch.address }}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Status</span>
+                  <span class="status-badge" [class.open]="branch.isOpen" [class.closed]="!branch.isOpen">
+                    {{ branch.isOpen ? 'Open' : 'Closed' }}
+                  </span>
+                </div>
               </div>
-            </ng-container>
-            <ng-template #noLibrarians>
-              <span class="no-librarians">No librarians assigned</span>
-            </ng-template>
+ 
+              <!-- Librarians -->
+              <div class="librarians-section">
+                <div class="librarians-header">
+                  <span class="detail-label">Librarians</span>
+                  <button class="action-btn outline small" (click)="openLibrarianModal(branch, $event)">
+                    + Manage
+                  </button>
+                </div>
+                <div class="librarians-list">
+                  @if (getLibrarians(branch).length > 0) {
+                    @for (lib of getLibrarians(branch); track lib.id) {
+                      <div class="librarian-chip">
+                        <span class="lib-avatar">{{ lib.name.charAt(0).toUpperCase() }}</span>
+                        <span class="lib-name">{{ lib.name }}</span>
+                      </div>
+                    }
+                  } @else {
+                    <span class="no-librarians">No librarians assigned</span>
+                  }
+                </div>
+              </div>
+ 
+              <!-- Actions -->
+              <div class="detail-actions">
+                @if (deleteConfirmId === branch.id) {
+                  <span class="confirm-label">Delete this branch?</span>
+                  <button class="action-btn danger" (click)="confirmDelete(branch.id, $event)">Yes, Delete</button>
+                  <button class="action-btn outline" (click)="cancelDelete()">Cancel</button>
+                } @else {
+                  <button class="action-btn outline" (click)="openEdit(branch, $event)">✏️ Edit</button>
+                  <button class="action-btn danger" (click)="requestDelete(branch.id, $event)">🗑 Delete</button>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+ 
+</div>
+ 
+<!-- ── Branch Modal ── -->
+@if (showModal) {
+  <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ isEditMode ? 'Edit Branch' : 'New Branch' }}</h2>
+        <button class="close-btn" (click)="closeModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" [(ngModel)]="form.name" placeholder="e.g. Central Library" />
+        </div>
+        <div class="form-group">
+          <label>Address</label>
+          <input type="text" [(ngModel)]="form.address" placeholder="e.g. 12 Main St, City" />
+        </div>
+        <div class="form-group toggle-group">
+          <label>Status</label>
+          <div class="toggle-row">
+            <button class="toggle-btn" [class.active]="form.isOpen" (click)="form.isOpen = true">Open</button>
+            <button class="toggle-btn" [class.active]="!form.isOpen" (click)="form.isOpen = false">Closed</button>
+          </div>
+        </div>
+        @if (modalError) {
+          <p class="modal-error">{{ modalError }}</p>
+        }
+      </div>
+      <div class="modal-footer">
+        <button class="action-btn outline" (click)="closeModal()" [disabled]="saving">Cancel</button>
+        <button class="action-btn primary" (click)="saveModal()" [disabled]="saving">
+          {{ saving ? 'Saving…' : (isEditMode ? 'Save Changes' : 'Create Branch') }}
+        </button>
+      </div>
+    </div>
+  </div>
+}
+ 
+<!-- ── Librarian Management Modal ── -->
+@if (showLibrarianModal && librarianModalBranch) {
+  <div class="modal-overlay" (click)="closeLibrarianModal()">
+    <div class="modal-card librarian-modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Manage Librarians</h2>
+        <button class="close-btn" (click)="closeLibrarianModal()">×</button>
+      </div>
+ 
+      <div class="modal-body">
+ 
+        <!-- Current librarians -->
+        <div class="lib-section">
+          <span class="detail-label">Assigned to {{ librarianModalBranch.name }}</span>
+          <div class="lib-manage-list">
+            @if (getLibrarians(librarianModalBranch).length > 0) {
+              @for (lib of getLibrarians(librarianModalBranch); track lib.id) {
+                <div class="lib-manage-row">
+                  <div class="lib-info">
+                    <span class="lib-avatar">{{ lib.name.charAt(0).toUpperCase() }}</span>
+                    <div>
+                      <div class="lib-name">{{ lib.name }}</div>
+                      <div class="lib-email">{{ lib.email }}</div>
+                    </div>
+                  </div>
+                  @if (removeConfirmId === lib.id) {
+                    <div class="inline-confirm">
+                      <span class="confirm-label">Remove?</span>
+                      <button class="action-btn danger small" (click)="confirmRemoveLibrarian(lib)">Yes</button>
+                      <button class="action-btn outline small" (click)="cancelRemoveLibrarian()">No</button>
+                    </div>
+                  } @else {
+                    <button class="action-btn danger small" (click)="requestRemoveLibrarian(lib.id)">Remove</button>
+                  }
+                </div>
+              }
+            } @else {
+              <p class="no-librarians">No librarians assigned yet.</p>
+            }
           </div>
         </div>
  
-        <!-- Actions -->
-        <div class="detail-actions">
-          <ng-container *ngIf="deleteConfirmId === branch.id; else normalActions">
-            <span class="confirm-label">Delete this branch?</span>
-            <button class="action-btn danger" (click)="confirmDelete(branch.id)">Yes, Delete</button>
-            <button class="action-btn outline" (click)="cancelDelete()">Cancel</button>
-          </ng-container>
-          <ng-template #normalActions>
-            <button class="action-btn outline" (click)="openEdit(branch, $event)">✏️ Edit</button>
-            <button class="action-btn danger" (click)="requestDelete(branch.id, $event)">🗑 Delete</button>
-          </ng-template>
+        <!-- Divider -->
+        <div class="lib-divider"></div>
+ 
+        <!-- Add librarians -->
+        <div class="lib-section">
+          <span class="detail-label">Add Unassigned Librarians</span>
+          <input
+            class="lib-search"
+            type="text"
+            [(ngModel)]="librarianSearch"
+            placeholder="Search by name…" />
+          <div class="lib-manage-list">
+            @if (getAvailableLibrarians().length > 0) {
+              @for (lib of getAvailableLibrarians(); track lib.id) {
+                <div class="lib-manage-row">
+                  <div class="lib-info">
+                    <span class="lib-avatar">{{ lib.name.charAt(0).toUpperCase() }}</span>
+                    <div>
+                      <div class="lib-name">{{ lib.name }}</div>
+                      <div class="lib-email">{{ lib.email }}</div>
+                    </div>
+                  </div>
+                  <button class="action-btn primary small" (click)="addLibrarian(lib)" [disabled]="librarianSaving">
+                    + Add
+                  </button>
+                </div>
+              }
+            } @else {
+              <p class="no-librarians">No unassigned librarians found.</p>
+            }
+          </div>
         </div>
+ 
+      </div>
+ 
+      <div class="modal-footer">
+        <button class="action-btn outline" (click)="closeLibrarianModal()">Done</button>
       </div>
     </div>
   </div>
- 
-</div>
- 
-<!-- ── Modal Overlay ── -->
-<div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
-  <div class="modal-card" (click)="$event.stopPropagation()">
-    <div class="modal-header">
-      <h2>{{ isEditMode ? 'Edit Branch' : 'New Branch' }}</h2>
-      <button class="close-btn" (click)="closeModal()">×</button>
-    </div>
- 
-    <div class="modal-body">
-      <div class="form-group">
-        <label>Name</label>
-        <input type="text" [(ngModel)]="form.name" placeholder="e.g. Central Library" />
-      </div>
-      <div class="form-group">
-        <label>Address</label>
-        <input type="text" [(ngModel)]="form.address" placeholder="e.g. 12 Main St, City" />
-      </div>
-      <div class="form-group toggle-group">
-        <label>Status</label>
-        <div class="toggle-row">
-          <button
-            class="toggle-btn"
-            [class.active]="form.isOpen"
-            (click)="form.isOpen = true">
-            Open
-          </button>
-          <button
-            class="toggle-btn"
-            [class.active]="!form.isOpen"
-            (click)="form.isOpen = false">
-            Closed
-          </button>
-        </div>
-      </div>
- 
-      <p class="modal-error" *ngIf="modalError">{{ modalError }}</p>
-    </div>
- 
-    <div class="modal-footer">
-      <button class="action-btn outline" (click)="closeModal()" [disabled]="saving">Cancel</button>
-      <button class="action-btn primary" (click)="saveModal()" [disabled]="saving">
-        {{ saving ? 'Saving…' : (isEditMode ? 'Save Changes' : 'Create Branch') }}
-      </button>
-    </div>
-  </div>
-</div>
+}
