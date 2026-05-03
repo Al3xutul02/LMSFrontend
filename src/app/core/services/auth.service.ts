@@ -6,11 +6,12 @@ import { Observable, throwError, of, firstValueFrom, switchMap } from 'rxjs';
 import { tap, catchError } from "rxjs/operators";
 import { UserRole } from "../models/app.models";
 import { TokenPayload } from "../models/jwt-payload";
+import { env } from "../../../environment";
 
 @Injectable({ providedIn: 'root'})
 export class AuthService {
     private http: HttpClient = inject(HttpClient);
-    private webApiUrl: string = 'https://localhost:7076/auth';
+    private webApiUrl: string = `${env.webApiUrl}/${env.endpointMap['auth']}`;
     private tokenPayload: TokenPayload | null = null;
 
     readonly loggedIn = signal(false);
@@ -97,6 +98,32 @@ export class AuthService {
         }
 
         throw new Error('User role not found.');
+    }
+
+    getUserName(): string {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            throw new Error('No token found.');
+        }
+
+        if (this.tokenPayload) {
+            return this.tokenPayload.name;
+        }
+
+        throw new Error('User name not found.');
+    }
+
+    getUserId(): number {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            throw new Error('No token found.');
+        }
+
+        if (this.tokenPayload) {
+            return Number(this.tokenPayload.id);
+        }
+
+        throw new Error('User ID not found.');
     }
 
     private handleAuthentication(response: LoginResponseDto) {

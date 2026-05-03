@@ -1,18 +1,167 @@
+.modal-wrapper {
+  background: var(--card-bg);
+  border-radius: 20px;
+  max-width: 900px;
+  margin: 20px auto;
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(93, 64, 55, 0.15); // Umbră bazată pe text-color
+  font-family: 'Inter', sans-serif;
+  border: 1px solid var(--border-color);
+}
+
+.modal-header {
+  background: var(--secondary-bg-color); // #b36a5e
+  color: var(--secondary-text-color); // #fdfaf6
+  padding: 14px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  .header-left { 
+    display: flex; 
+    gap: 12px; 
+    align-items: center; 
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+  .close-btn { 
+    background: none; 
+    border: none; 
+    color: var(--secondary-text-color); 
+    font-size: 28px; 
+    cursor: pointer;
+    line-height: 1;
+  }
+}
+
+.modal-body {
+  display: flex;
+  padding: 32px;
+  gap: 40px;
+  background: var(--primary-bg-color); // #fdfaf6
+}
+
+.book-sidebar {
+  flex: 0 0 260px;
+  .book-cover img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    border: 4px solid var(--card-bg);
+  }
+  .meta-details {
+    margin-top: 24px;
+    font-size: 13px;
+    color: var(--primary-text-color);
+    line-height: 1.8;
+    .meta-item strong { color: var(--secondary-bg-color); }
+  }
+}
+
+.book-content {
+  flex: 1;
+  color: var(--primary-text-color);
+
+  .book-title { 
+    font-size: 28px; 
+    margin: 0 0 16px 0; 
+    color: var(--primary-text-color);
+    font-family: 'Serif', Georgia, serif; // Un look mai academic/bibliotecă
+  }
+  
+  .description-box {
+    h3 { font-size: 16px; color: var(--secondary-bg-color); margin-bottom: 8px; border-bottom: 2px solid var(--accent); display: inline-block; }
+    p { font-size: 14px; line-height: 1.6; opacity: 0.9; }
+  }
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 24px 0;
+  padding: 20px 0;
+  border-top: 1px solid var(--accent);
+  font-size: 13px;
+  .grid-cell strong { color: var(--secondary-bg-color); }
+}
+
+.reserve-action-card {
+  background: var(--card-bg);
+  padding: 28px;
+  border-radius: 32px; // Păstrăm rotunjirea cerută
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+
+  .reserve-title { 
+    font-size: 22px; 
+    color: var(--secondary-bg-color); 
+    margin: 0; 
+    font-family: 'Serif', serif;
+  }
+  .reserve-subtitle { font-size: 14px; opacity: 0.8; margin: 8px 0 24px 0; }
+
+  label { 
+    font-size: 11px; 
+    font-weight: 800; 
+    color: var(--accent); 
+    display: block; 
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+  
+  .date-picker {
+    width: 100%;
+    height: 50px;
+    border-radius: 12px;
+    border: 2px solid var(--primary-bg-color);
+    background: var(--primary-bg-color);
+    color: var(--primary-text-color);
+    padding: 0 16px;
+    margin-bottom: 24px;
+    font-family: inherit;
+    &:focus { outline: none; border-color: var(--secondary-bg-color); }
+  }
+
+  .confirm-btn {
+    width: 100%;
+    height: 56px;
+    background: var(--primary-text-color); // #5d4037
+    color: var(--secondary-text-color); // #fdfaf6
+    border: none;
+    border-radius: 16px;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background: var(--secondary-bg-color);
+      transform: translateY(-2px);
+    }
+  }
+}
+
 .nav-container {
-  background-color: var(--secondary-bg-color);
-  color: var(--secondary-text-color);
-  padding: 10px 20px 20px 20px;
+  padding: 20px; 
+  background-color: var(--primary-bg-color); 
 
   .navbar {
     display: flex;
     align-items: center;
-    width: 100%;
     justify-content: space-between;
+    background-color: var(--card-bg); 
+    padding: 15px 40px;
+    border-radius: 50px; 
+    box-shadow: 0 10px 25px rgba(93, 64, 55, 0.05); 
+    border: 1px solid var(--border-color);
 
     .navbar-brand {
-      font-size: 1.5rem;
-      font-weight: bold;
-      flex: 1;
+      font-family: 'EB Garamond', serif; 
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--primary-text-color);
+      letter-spacing: -0.5px;
     }
 
     .navbar-menu {
@@ -20,21 +169,29 @@
       display: flex;
       margin: 0;
       padding: 0;
-      flex: 2;
-      justify-content: flex-end;
+      gap: 10px;
 
       li {
-        margin-left: 20px;
-      
         a {
-          color: var(--secondary-text-color);
+          font-family: 'Figtree', sans-serif;
+          color: var(--primary-text-color);
           text-decoration: none;
-          margin-right: 20px;
-          transition: all 0.5s;
+          padding: 8px 20px;
+          border-radius: 25px;
+          font-weight: 600;
+          font-size: 0.95rem;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          border-bottom: none; 
 
           &:hover {
-            color: color-mix(in srgb, var(--secondary-text-color), white 50%);
-            text-decoration: underline;
+            background-color: var(--primary-bg-color);
+            color: var(--secondary-bg-color); 
+          }
+
+          &.active {
+            background-color: var(--secondary-bg-color); 
+            color: var(--secondary-text-color);  
+            box-shadow: 0 4px 12px rgba(179, 106, 94, 0.2);
           }
         }
       }

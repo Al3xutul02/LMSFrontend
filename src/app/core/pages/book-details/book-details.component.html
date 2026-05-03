@@ -1,0 +1,19 @@
+<div class="book-card-container">
+  @if(bookDto != null){
+  <div class="details-popover">
+    <div class="header-popover">
+      <h3>{{bookDto.title}}</h3> 
+      <span class="author">{{bookDto.author}}</span>
+    </div>
+
+    <div class="body-popover">
+      <span class="description">{{bookDto.description}}</span>
+      <span class="loan-duration">Loan Duration: {{bookDto.loanDurationDays}}</span>
+    </div>
+
+    <div class="footer-popover">
+      <span class="status">{{bookDto.status}}</span>
+    </div>
+  </div>
+  }
+</div>
