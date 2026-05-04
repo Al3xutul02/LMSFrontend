@@ -12,6 +12,7 @@ import { BookDataService } from '../../../core/services/data/book.data.service';
 import { LoanReadDto } from '../../../core/models/dtos/loan.dtos';
 import { BookReadDto } from '../../../core/models/dtos/book.dtos';
 import { BookDetailsComponent } from '../book-details/book-details.component';
+import { AssetService } from '../../services/asset.service';
 
 export interface LoanBookEntry {
   dueDate: Date;
@@ -34,6 +35,7 @@ export class ReaderSeeProfileComponent implements OnInit, OnDestroy {
   private authService = inject(AuthService);
   private loanService = inject(LoanDataService);
   private bookService = inject(BookDataService);
+  assetService = inject(AssetService);
 
   userProfile?: UserReadDto;
   borrowedCount: number = 0;
@@ -43,6 +45,9 @@ export class ReaderSeeProfileComponent implements OnInit, OnDestroy {
   isFavorite: boolean = false;
   isEditingName: boolean = false;
   editedName: string = '';
+  book!: BookReadDto;
+  imagePath!: string;
+
 
   public hoveredBook: BookReadDto | null = null;
   popoverPos = { x: 0, y: 0 };
@@ -190,6 +195,9 @@ export class ReaderSeeProfileComponent implements OnInit, OnDestroy {
         this.recommendations = books
           .filter(b => !borrowedIsbns.has(b.isbn))
           .slice(0, 4);
+        this.book = this.book;
+          const normalizedFileName = decodeURIComponent(this.book.imagePath).replace(/ /g, '_');
+          this.imagePath = this.assetService.getImagePath('books', normalizedFileName);
       },
       error: (err) => console.error('Eroare recomandări:', err)
     });

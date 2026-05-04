@@ -56,6 +56,9 @@
              (mouseleave)="onMouseLeave()"
              (mousemove)="onMouseMove($event)">
           <div class="book-info">
+            @if (book.imagePath != null && book.imagePath.trim() !== '') {
+          <img [src]="imagePath" alt="Book Cover" loading="lazy">
+        }
             <span class="book-title"><strong>{{ entry.title }}</strong></span>
             <span class="book-author" *ngIf="entry.author"> by {{ entry.author }}</span>
           </div>
