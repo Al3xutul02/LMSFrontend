@@ -1,0 +1,233 @@
+<div class="returns-container">
+
+  <!-- Back Link -->
+  <a class="back-link" routerLink="/librarian/update-inventory">← Back to Inventory</a>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h2>Manage Returns</h2>
+      <p class="header-subtitle">Process overdue book returns and manage fines</p>
+    </div>
+  </div>
+
+  <!-- Skeleton Loading -->
+  <div *ngIf="loading">
+    <div class="stat-card skel-stat-card">
+      <div class="stat-main">
+        <div class="skel skel-label"></div>
+        <div class="skel skel-number"></div>
+      </div>
+      <div class="skel skel-badge"></div>
+    </div>
+    <div class="table-card">
+      <table class="loans-table">
+        <thead>
+          <tr>
+            <th>ID</th><th>User</th><th>Issue Date</th><th>Due Date</th>
+            <th>Overdue</th><th>Books</th><th>Fine</th><th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let i of [1,2,3,4]" class="skeleton-row">
+            <td><div class="skel skel-sm"></div></td>
+            <td>
+              <div class="skel-user">
+                <div class="skel skel-avatar"></div>
+                <div class="skel skel-md"></div>
+              </div>
+            </td>
+            <td><div class="skel skel-md"></div></td>
+            <td><div class="skel skel-md"></div></td>
+            <td><div class="skel skel-pill"></div></td>
+            <td><div class="skel skel-pill"></div></td>
+            <td><div class="skel skel-pill"></div></td>
+            <td><div class="skel skel-btn"></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="state-container error-state">
+    <p>{{ error }}</p>
+  </div>
+
+  <!-- Toast -->
+  <div *ngIf="toastMsg" class="toast" [class.toast-error]="toastIsError">
+    <span class="toast-icon">{{ toastIsError ? '!' : '✓' }}</span>
+    {{ toastMsg }}
+  </div>
+
+  <div *ngIf="!loading && !error">
+
+    <!-- Stat Card -->
+    <div class="stat-card">
+      <div class="stat-main">
+        <span class="stat-label">Overdue Loans Awaiting Return</span>
+        <span class="stat-value">{{ displayCount }}</span>
+      </div>
+      <div class="stat-badge" [class.stat-badge-clear]="loans.length === 0">
+        {{ loans.length === 0 ? 'All clear' : 'Requires attention' }}
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="loans.length === 0" class="state-container empty-state">
+      <p>No overdue loans — all books have been returned on time!</p>
+    </div>
+
+    <!-- Table -->
+    <div *ngIf="loans.length > 0" class="table-card">
+      <table class="loans-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>User</th>
+            <th>Issue Date</th>
+            <th>Due Date</th>
+            <th>Overdue</th>
+            <th>Books</th>
+            <th>Fine</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let loan of loans; let i = index">
+
+            <!-- Main Row -->
+            <tr class="loan-row"
+                [class.row-removing]="isRemoving(loan.id)"
+                [class.row-expanded]="isExpanded(loan.id)"
+                [style.animation-delay]="i * 55 + 'ms'">
+
+              <td class="cell-id">#{{ loan.id }}</td>
+
+              <td class="cell-user">
+                <span class="user-avatar">{{ (loan.loanerName || 'N')[0].toUpperCase() }}</span>
+                {{ loan.loanerName || 'N/A' }}
+              </td>
+
+              <td>{{ loan.issueDate | date:'MMM d, y' }}</td>
+
+              <td class="cell-due">{{ loan.dueDate | date:'MMM d, y' }}</td>
+
+              <td>
+                <span class="days-badge" [class.days-critical]="daysOverdue(loan.dueDate) > 14">
+                  {{ daysOverdue(loan.dueDate) }} day{{ daysOverdue(loan.dueDate) !== 1 ? 's' : '' }}
+                </span>
+              </td>
+
+              <td>
+                <span class="books-pill">
+                  {{ loan.bookRelations?.length || 0 }} book{{ (loan.bookRelations?.length || 0) !== 1 ? 's' : '' }}
+                </span>
+              </td>
+
+              <td>
+                <span class="fine-status-pill"
+                      [class.pill-unpaid]="getFine(loan)?.status === 'unpaid'"
+                      [class.pill-paid]="getFine(loan)?.status === 'paid'"
+                      [class.pill-waived]="getFine(loan)?.status === 'waived'"
+                      [class.pill-none]="!getFine(loan)">
+                  <ng-container *ngIf="getFine(loan) as fine">
+                    ${{ fine.amount }} · {{ fine.status | titlecase }}
+                  </ng-container>
+                  <ng-container *ngIf="!getFine(loan)">No fine</ng-container>
+                </span>
+              </td>
+
+              <td class="cell-actions">
+                <button class="btn-fine ripple-btn"
+                        (click)="toggleExpand(loan.id)"
+                        [class.btn-fine-open]="isExpanded(loan.id)">
+                  {{ isExpanded(loan.id) ? 'Fine ▲' : 'Fine ▼' }}
+                </button>
+                <button class="btn-return ripple-btn"
+                        (click)="markReturned(loan)"
+                        [class.btn-loading]="isProcessing(loan.id)"
+                        [disabled]="isProcessing(loan.id)">
+                  <span *ngIf="isProcessing(loan.id)" class="btn-spinner"></span>
+                  <span *ngIf="!isProcessing(loan.id)">Return</span>
+                </button>
+              </td>
+            </tr>
+
+            <!-- Fine Detail Row -->
+            <tr *ngIf="isExpanded(loan.id)" class="detail-row">
+              <td colspan="8">
+                <div class="fine-panel">
+
+                  <div class="fine-panel-header">
+                    <span class="fine-panel-title">
+                      {{ getFine(loan) ? 'Edit Fine' : 'Assess Fine' }}
+                    </span>
+                    <span *ngIf="!getFine(loan)" class="fine-suggestion">
+                      Suggested: ${{ getForm(loan.id).amount }} ({{ daysOverdue(loan.dueDate) }} days × $0.50)
+                    </span>
+                    <span *ngIf="getFine(loan) as fine" class="fine-status-badge"
+                          [class.badge-unpaid]="fine.status === 'unpaid'"
+                          [class.badge-paid]="fine.status === 'paid'"
+                          [class.badge-waived]="fine.status === 'waived'">
+                      {{ fine.status | titlecase }}
+                    </span>
+                  </div>
+
+                  <div class="fine-panel-body">
+                    <div class="fine-fields">
+
+                      <div class="fine-field">
+                        <label class="fine-label">Amount ($)</label>
+                        <input type="number"
+                               class="fine-input fine-input-amount"
+                               [ngModel]="getForm(loan.id).amount"
+                               (ngModelChange)="getForm(loan.id).amount = $event; markFormDirty(loan.id)"
+                               min="0"
+                               step="0.5"
+                               placeholder="0.00"
+                               [disabled]="getFine(loan)?.status === 'paid' || getFine(loan)?.status === 'waived'" />
+                      </div>
+
+
+                    </div>
+
+                    <div class="fine-actions">
+                      <button class="btn-save ripple-btn"
+                              (click)="saveFine(loan)"
+                              [disabled]="isFineProcessing(loan.id) || getFine(loan)?.status === 'paid' || getFine(loan)?.status === 'waived'">
+                        <span *ngIf="isFineProcessing(loan.id)" class="btn-spinner btn-spinner-dark"></span>
+                        <span *ngIf="!isFineProcessing(loan.id)">
+                          {{ getFine(loan) ? 'Save Changes' : 'Create Fine' }}
+                        </span>
+                      </button>
+
+                      <ng-container *ngIf="getFine(loan) as fine">
+                        <button *ngIf="fine.status === 'unpaid'"
+                                class="btn-paid ripple-btn"
+                                (click)="updateFineStatus(loan, 'paid')"
+                                [disabled]="isFineProcessing(loan.id)">
+                          Mark Paid
+                        </button>
+                        <button *ngIf="fine.status === 'unpaid'"
+                                class="btn-waived ripple-btn"
+                                (click)="updateFineStatus(loan, 'waived')"
+                                [disabled]="isFineProcessing(loan.id)">
+                          Waive Fine
+                        </button>
+                      </ng-container>
+                    </div>
+                  </div>
+
+                </div>
+              </td>
+            </tr>
+
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+</div>

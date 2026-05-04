@@ -1,0 +1,77 @@
+<div class="inventory-container">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h2>Manage Inventory</h2>
+      <p class="header-subtitle">Overview of the library's book collection and availability</p>
+    </div>
+  </div>
+
+  <!-- Loading state -->
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <span>Loading inventory…</span>
+  </div>
+
+  <!-- Content -->
+  <div *ngIf="!loading" class="content">
+
+    <!-- Stat Cards -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-label">Total Books</span>
+        <span class="stat-value">{{ displayTotal | number }}</span>
+        <span class="stat-desc">registered in the library</span>
+      </div>
+      <div class="stat-card stat-card-accent">
+        <span class="stat-label">Books Available</span>
+        <span class="stat-value">{{ displayAvailable | number }}</span>
+        <span class="stat-desc">ready to be borrowed</span>
+      </div>
+    </div>
+
+    <!-- Availability Progress Bar -->
+    <div class="progress-card" *ngIf="totalBooks > 0">
+      <div class="progress-header">
+        <span class="progress-label">Availability</span>
+        <span class="progress-pct">{{ ((booksAvailable / totalBooks) * 100).toFixed(0) }}% available</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill"
+             [style.width.%]="(booksAvailable / totalBooks) * 100">
+        </div>
+      </div>
+      <div class="progress-legend">
+        <span class="legend-dot legend-available"></span> Available ({{ booksAvailable }})
+        <span class="legend-dot legend-loaned" style="margin-left:1rem"></span> Loaned out ({{ totalBooks - booksAvailable }})
+      </div>
+    </div>
+
+    <!-- Actions Card -->
+    <div class="actions-card">
+      <h3 class="actions-title">Quick Actions</h3>
+      <div class="actions-list">
+
+        <div class="action-row">
+          <div class="action-info">
+            <span class="action-name">Update Inventory</span>
+            <span class="action-desc">Adjust book counts and stock levels</span>
+          </div>
+          <button class="btn-submit" routerLink="/librarian/update-inventory">Update Inventory</button>
+        </div>
+
+        <div class="action-row">
+          <div class="action-info">
+            <span class="action-name">Manage Returns</span>
+            <span class="action-desc">Process returned books and update availability</span>
+          </div>
+          <button class="btn-outline" routerLink="/librarian/manage-returns">Manage Returns</button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
