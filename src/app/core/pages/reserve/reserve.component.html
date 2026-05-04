@@ -12,7 +12,9 @@
   <div class="modal-body">
     <aside class="book-sidebar">
       <div class="book-cover">
-      <!--  <img [src]="book.coverImageUrl || 'assets/no-cover.png'" alt="Cover"> -->
+        @if (book.imagePath != null && book.imagePath.trim() !== '') {
+          <img [src]="imagePath" alt="Book Cover" loading="lazy">
+        }
       </div>
       <div class="meta-details">
         <div class="meta-item"><strong>Author:</strong> {{ book.author }}</div>

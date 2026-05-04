@@ -7,7 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BookDataService } from '../../services/data/book.data.service';
 import { LoanCreateDto } from '../../models/dtos/loan.dtos';
 import { AuthService } from '../../services/auth.service';
-import { map } from 'rxjs';
+import { AssetService } from '../../services/asset.service';
 
 @Component({
   selector: 'reserve',
@@ -20,21 +20,27 @@ export class ReserveComponent implements OnInit {
   authService = inject(AuthService);
   loanService = inject(LoanDataService);
   bookService = inject(BookDataService);
+  assetService = inject(AssetService);
   route = inject(ActivatedRoute);
   @Output() closed = new EventEmitter<void>();
   
   book!: BookReadDto;
+  imagePath!: string;
   pickupDate: string = '';
   bookCount: number = 1;
 
   async ngOnInit() {
     this.book = history.state.book;
-    
+    const normalizedFileName = decodeURIComponent(this.book.imagePath).replace(/ /g, '_');
+    this.imagePath = this.assetService.getImagePath('books', normalizedFileName);
+
     if (!this.book) {
       const isbn: number = Number(this.route.snapshot.paramMap.get('isbn')!);
       this.bookService.getItemById(isbn).subscribe({
         next: (book) => {
           this.book = book;
+          const normalizedFileName = decodeURIComponent(this.book.imagePath).replace(/ /g, '_');
+          this.imagePath = this.assetService.getImagePath('books', normalizedFileName);
         }
       });
     }
