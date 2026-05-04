@@ -1,11 +1,12 @@
 import { inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { env } from '../../../../../environment';
 
 export class DataService<TCreateDto, TReadDto, TUpdateDto> {
   protected http: HttpClient = inject(HttpClient);
 
-  protected webApiUrl: string = 'http://localhost:5266';
+  protected webApiUrl: string = env.webApiUrl;
   protected controllerMapping: string = '';
   protected apiCallUrl: string;
 
@@ -20,7 +21,7 @@ export class DataService<TCreateDto, TReadDto, TUpdateDto> {
   }
 
   getItemById(id: number): Observable<TReadDto> {
-    return this.http.get<TReadDto>(`${this.apiCallUrl}/get?id=${id}`);
+    return this.http.get<TReadDto>(`${this.apiCallUrl}/get`, { params: { id } });
   }
 
   // POST request
@@ -35,6 +36,6 @@ export class DataService<TCreateDto, TReadDto, TUpdateDto> {
 
   // DELETE request
   deleteItem(id: number): Observable<boolean> {
-    return this.http.delete<boolean>(`${this.apiCallUrl}/delete?id=${id}`);
+    return this.http.delete<boolean>(`${this.apiCallUrl}/delete`, { params: { id } });
   }
 }

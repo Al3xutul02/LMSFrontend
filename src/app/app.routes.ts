@@ -19,7 +19,7 @@ export const routes: Routes = [
     {
         path: 'librarian',
         component: LibrarianLayoutComponent,
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard], data: { roles: ['librarian'] as UserRole[] },
         children: [
             { path: '',                 redirectTo: 'pending-loans', pathMatch: 'full' },
             { path: 'pending-loans',    component: PendingLoansComponent },
