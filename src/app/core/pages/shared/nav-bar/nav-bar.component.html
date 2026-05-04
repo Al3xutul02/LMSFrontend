@@ -14,3 +14,14 @@
     </a>
   </div>
 </div>
+<div class="nav-container">
+    <nav class="navbar">
+        <div class="navbar-brand">Library Management System</div>
+        <ul class="navbar-menu">
+            <li><a routerLink="/home">Home</a></li>
+            @if (isAdmin) {
+                <li><a routerLink="/dashboard">Dashboard</a></li>
+            }
+        </ul>
+    </nav>
+</div>

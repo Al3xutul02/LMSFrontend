@@ -28,3 +28,14 @@
   </div>
 
 </div>
+  
+  @if (authService.loggedIn()) {
+    <nav-bar></nav-bar>
+  }
+ 
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+ 
+</div>
+ 

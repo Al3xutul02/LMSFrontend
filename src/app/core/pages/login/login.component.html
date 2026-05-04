@@ -1,0 +1,46 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="header">
+      <h1>Welcome</h1>
+      
+      <div class="tabs">
+        <button type="button" (click)="toggleMode(true)" [class.active]="isLoginMode">Login</button>
+        <button type="button" (click)="toggleMode(false)" [class.active]="!isLoginMode">Register</button>
+        <div class="underline" [style.left]="isLoginMode ? '0%' : '50%'"></div>
+      </div>
+    </div>
+
+    <form (ngSubmit)="onSubmit()">
+      <div class="input-group">
+        <label>Username</label>
+        <input type="text" [(ngModel)]="username" name="username" required placeholder="Enter username">
+      </div>
+
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" [(ngModel)]="password" name="password" required placeholder="••••••••">
+      </div>
+
+      @if (!isLoginMode) {
+        <div class="input-group">
+          @if (confirmPassword && confirmPassword !== password) {
+            <label class="error">Passwords do not match</label>
+          }
+          <label>Confirm Password</label>
+          <input type="password" [(ngModel)]="confirmPassword" name="confirmPassword" required placeholder="••••••••">
+        </div>
+      }
+
+      @if (!isLoginMode) {
+        <div class="input-group">
+            <label>Email</label>
+            <input type="email" [(ngModel)]="email" name="email" required placeholder="john@example.com">
+        </div>
+      }
+
+      <button type="submit" [disabled]="(!username || !password) || (!isLoginMode && (password !== confirmPassword || !email))">
+        {{ isLoginMode ? 'Sign In' : 'Create Account' }}
+      </button>
+    </form>
+  </div>
+</div>
