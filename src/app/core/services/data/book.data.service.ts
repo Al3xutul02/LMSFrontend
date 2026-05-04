@@ -5,13 +5,18 @@ import { env } from '../../../../environment';
 import { Observable } from 'rxjs/internal/Observable';
 import { HttpParams } from '@angular/common/http';
 
-@Injectable({ providedIn: 'root'})
-export class BookDataService 
+@Injectable({ providedIn: 'root' })
+export class BookDataService
     extends DataService<BookCreateDto, BookReadDto, BookUpdateDto> {
   constructor() {
     super(env.endpointMap['book']);
   }
 
+  getStats(): Observable<{ totalBooks: number; booksAvailable: number }> {
+    return this.http.get<{ totalBooks: number; booksAvailable: number }>(
+      `${this.apiCallUrl}/stats`
+    );
+  }
   getDetails(isbn: number) {
     return this.http.get<BookReadDto>(`${this.apiCallUrl}/get-details/${isbn}`);
   }

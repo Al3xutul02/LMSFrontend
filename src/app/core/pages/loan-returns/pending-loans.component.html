@@ -1,0 +1,100 @@
+<div class="pending-loans-container">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div>
+      <h2>Pending Loans</h2>
+      <p class="header-subtitle">Review and manage loan requests awaiting approval</p>
+    </div>
+  </div>
+
+  <!-- Skeleton Loading -->
+  <div *ngIf="loading" class="table-card">
+    <table class="loans-table">
+      <thead>
+        <tr>
+          <th>ID</th><th>User</th><th>Issue Date</th><th>Due Date</th>
+          <th>Books</th><th>Status</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let i of [1,2,3,4,5]" class="skeleton-row">
+          <td><div class="skel skel-sm"></div></td>
+          <td>
+            <div class="skel-user">
+              <div class="skel skel-avatar"></div>
+              <div class="skel skel-md"></div>
+            </div>
+          </td>
+          <td><div class="skel skel-md"></div></td>
+          <td><div class="skel skel-md"></div></td>
+          <td><div class="skel skel-pill"></div></td>
+          <td><div class="skel skel-pill"></div></td>
+          <td>
+            <div class="skel-actions">
+              <div class="skel skel-btn"></div>
+              <div class="skel skel-btn"></div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="state-container error-state">
+    <p>{{ error }}</p>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && loans.length === 0 && !error" class="state-container empty-state">
+    <p>No pending loans — all caught up!</p>
+  </div>
+
+  <!-- Loans Table -->
+  <div *ngIf="!loading && loans.length > 0" class="table-card">
+    <table class="loans-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>User</th>
+          <th>Issue Date</th>
+          <th>Due Date</th>
+          <th>Books</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let loan of loans; let i = index"
+            class="loan-row"
+            [style.animation-delay]="i * 55 + 'ms'">
+          <td class="cell-id">#{{ loan.id }}</td>
+          <td class="cell-user">
+            <span class="user-avatar">{{ (loan.loanerName || 'N')[0].toUpperCase() }}</span>
+            {{ loan.loanerName || 'N/A' }}
+          </td>
+          <td>{{ loan.issueDate | date:'MMM d, y' }}</td>
+          <td>{{ loan.dueDate | date:'MMM d, y' }}</td>
+          <td>
+            <span class="books-pill">
+              {{ loan.bookRelations?.length || 0 }} book(s)
+            </span>
+          </td>
+          <td>
+            <span [class]="'status-badge ' + loan.status">{{ loan.status }}</span>
+          </td>
+          <td class="cell-actions">
+            <button (click)="approve(loan.id)" class="btn-approve ripple-btn">
+              <span class="btn-icon">✓</span> Approve
+            </button>
+            <button (click)="reject(loan.id)" class="btn-reject ripple-btn">
+              <span class="btn-icon">✕</span> Reject
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

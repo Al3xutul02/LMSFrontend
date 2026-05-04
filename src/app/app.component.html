@@ -1,11 +1,7 @@
-<div class="app-container">
-  
-  @if (authService.loggedIn()) {
-    <nav-bar></nav-bar>
-  }
- <main class="main-content">
-    <router-outlet></router-outlet>
-  </main>
- 
+@if (authService.loggedIn()) {
+  <nav-bar></nav-bar>
+}
+
+<div class="main-content">
+  <router-outlet></router-outlet>
 </div>
- 
