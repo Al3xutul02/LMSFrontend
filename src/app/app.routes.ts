@@ -11,10 +11,12 @@ import { ManageReturnsComponent } from './core/pages/manage-returns/manage-retur
 import { OverdueUsersComponent } from './core/pages/overdue-users/overdue-users.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { UserRole } from './core/models/app.models';
+import { ReserveComponent } from './core/pages/reserve/reserve.component';
 
 export const routes: Routes = [
     { path: 'login',     component: LoginComponent },
     { path: 'home',      component: HomeComponent,      canActivate: [AuthGuard] },
+    { path: 'reserve/:isbn', component: ReserveComponent, canActivate: [AuthGuard] },
     { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard], data: { roles: ['administrator'] as UserRole[] } },
     {
         path: 'librarian',

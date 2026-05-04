@@ -210,7 +210,8 @@ export class UpdateInventoryComponent implements OnInit {
       description: form.description.trim(),
       count:       form.count,
       status:      form.status,
-      genres:      form.genres
+      genres:      form.genres,
+      imagePath:   this.books.find(b => b.isbn === isbn)?.imagePath ?? ''
     };
 
     this.bookService.updateItem(dto).subscribe({
@@ -276,6 +277,6 @@ export class UpdateInventoryComponent implements OnInit {
 
   // ── Navigation ────────────────────────────────────────────────────
   goBack(): void {
-    this.router.navigate(['/inventory']);
+    this.router.navigate(['/librarian/inventory']);
   }
 }

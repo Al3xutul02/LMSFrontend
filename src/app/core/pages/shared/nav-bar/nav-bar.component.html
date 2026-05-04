@@ -3,11 +3,11 @@
         <div class="navbar-brand">Library Management System</div>
         <ul class="navbar-menu">
             <li><a routerLink="/home" routerLinkActive="active">Home</a></li>
+            @if (isLibrarian) {
+                <li><a routerLink="/librarian" routerLinkActive="active">Librarian Details</a></li>
+            }
             @if (isAdmin) {
                 <li><a routerLink="/dashboard" routerLinkActive="active">Dashboard</a></li>
-            }
-            @if (isLibrarian || isAdmin) {
-                <li><a routerLink="/librarian" routerLinkActive="active">Librarian Details</a></li>
             }
         </ul>
     </nav>

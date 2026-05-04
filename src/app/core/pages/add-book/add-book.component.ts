@@ -95,7 +95,8 @@ export class AddBookComponent {
       description: this.description.trim(),
       genres: this.selectedGenres,
       count: this.count,
-      status: this.status
+      status: this.status,
+      imagePath: '' // Placeholder, as image upload is not implemented
     };
 
     this.bookService.addItem(dto).subscribe({
