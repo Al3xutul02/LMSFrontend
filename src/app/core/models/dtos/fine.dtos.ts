@@ -12,7 +12,7 @@ export interface FineReadDto extends Dto {
     status: FineStatus;
 }
 
-export interface FineUpdateDto extends Dto{
+export interface FineUpdateDto extends Dto {
     id: number;
     loanId: number;
     amount: number;

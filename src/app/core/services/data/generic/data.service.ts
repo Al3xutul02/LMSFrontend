@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 export class DataService<TCreateDto, TReadDto, TUpdateDto> {
   protected http: HttpClient = inject(HttpClient);
 
-  protected webApiUrl: string = 'https://localhost:7076';
+  protected webApiUrl: string = 'http://localhost:5266';
   protected controllerMapping: string = '';
   protected apiCallUrl: string;
 
@@ -20,7 +20,7 @@ export class DataService<TCreateDto, TReadDto, TUpdateDto> {
   }
 
   getItemById(id: number): Observable<TReadDto> {
-    return this.http.get<TReadDto>(`${this.apiCallUrl}/get/${id}`);
+    return this.http.get<TReadDto>(`${this.apiCallUrl}/get?id=${id}`);
   }
 
   // POST request
@@ -35,6 +35,6 @@ export class DataService<TCreateDto, TReadDto, TUpdateDto> {
 
   // DELETE request
   deleteItem(id: number): Observable<boolean> {
-    return this.http.delete<boolean>(`${this.apiCallUrl}/delete/${id}`);
+    return this.http.delete<boolean>(`${this.apiCallUrl}/delete?id=${id}`);
   }
 }

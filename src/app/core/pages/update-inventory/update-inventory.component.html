@@ -1,0 +1,183 @@
+<div class="page-container">
+
+  <!-- ── Header ──────────────────────────────────────────────────── -->
+  <div class="page-header">
+    <button class="btn-back" (click)="goBack()">
+      <span class="back-arrow">←</span> Back to Inventory
+    </button>
+    <div class="header-text">
+      <h2>Update Inventory</h2>
+      <p class="header-subtitle">Edit book details and manage stock levels across branches</p>
+    </div>
+  </div>
+
+  <!-- ── Toast ────────────────────────────────────────────────────── -->
+  <div *ngIf="toast" class="toast" [class.toast-success]="toast.type === 'success'" [class.toast-error]="toast.type === 'error'">
+    <span class="toast-icon">{{ toast.type === 'success' ? '✓' : '!' }}</span>
+    {{ toast.message }}
+  </div>
+
+  <!-- ── Loading ───────────────────────────────────────────────────── -->
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <span>Loading books and branches…</span>
+  </div>
+
+  <!-- ── Content ───────────────────────────────────────────────────── -->
+  <ng-container *ngIf="!loading">
+
+    <!-- Search bar -->
+    <div class="search-bar">
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Search by title, author or ISBN…"
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="onSearch()" />
+      <span *ngIf="searchQuery" class="search-clear" (click)="searchQuery=''; onSearch()">✕</span>
+    </div>
+
+    <!-- Empty state -->
+    <div *ngIf="filteredBooks.length === 0" class="empty-state">
+      <span class="empty-icon">📚</span>
+      <p>No books match your search.</p>
+    </div>
+
+    <!-- Book list -->
+    <div class="book-list">
+      <div
+        *ngFor="let book of filteredBooks"
+        class="book-card"
+        [class.expanded]="isExpanded(book.isbn)">
+
+        <!-- ── Book row (always visible) ── -->
+        <div class="book-row" (click)="toggleExpand(book.isbn)">
+          <div class="book-info">
+            <span class="book-title">{{ getForm(book.isbn).title }}</span>
+            <span class="book-meta">{{ getForm(book.isbn).author }}
+              <span class="isbn-badge">ISBN {{ book.isbn }}</span>
+            </span>
+          </div>
+          <div class="book-row-right">
+            <span class="stock-badge" [class.zero]="getForm(book.isbn).count === 0">
+              {{ getForm(book.isbn).count }} cop{{ getForm(book.isbn).count === 1 ? 'y' : 'ies' }}
+            </span>
+            <span class="status-pill" [class]="'status-' + getForm(book.isbn).status">
+              {{ getForm(book.isbn).status }}
+            </span>
+            <span class="chevron" [class.open]="isExpanded(book.isbn)">›</span>
+          </div>
+        </div>
+
+        <!-- ── Expanded edit area ── -->
+        <div *ngIf="isExpanded(book.isbn)" class="expand-area" (click)="$event.stopPropagation()">
+
+          <!-- SECTION 1: Book Details -->
+          <div class="section">
+            <h4 class="section-title">Book Details</h4>
+
+            <div class="form-row">
+              <div class="field">
+                <label>Title <span class="req">*</span></label>
+                <input type="text" [(ngModel)]="getForm(book.isbn).title" placeholder="Book title" />
+              </div>
+              <div class="field">
+                <label>Author <span class="req">*</span></label>
+                <input type="text" [(ngModel)]="getForm(book.isbn).author" placeholder="Author name" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Description</label>
+              <textarea [(ngModel)]="getForm(book.isbn).description" rows="2" placeholder="Brief summary…"></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="field">
+                <label>Total Count</label>
+                <div class="qty-control">
+                  <button type="button" class="qty-btn" (click)="decBook(book.isbn)">−</button>
+                  <input type="number" [(ngModel)]="getForm(book.isbn).count" min="0" />
+                  <button type="button" class="qty-btn" (click)="incBook(book.isbn)">+</button>
+                </div>
+              </div>
+              <div class="field">
+                <label>Status</label>
+                <select [(ngModel)]="getForm(book.isbn).status">
+                  <option *ngFor="let s of statusOptions" [value]="s.value">{{ s.label }}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Genres</label>
+              <div class="genre-grid">
+                <button
+                  type="button"
+                  *ngFor="let genre of allGenres"
+                  class="genre-pill"
+                  [class.selected]="isGenreSelected(book.isbn, genre)"
+                  (click)="toggleGenre(book.isbn, genre)">
+                  {{ formatGenre(genre) }}
+                </button>
+              </div>
+            </div>
+
+            <div class="section-actions">
+              <button
+                class="btn-save"
+                (click)="saveBook(book.isbn)"
+                [disabled]="savingBookISBN === book.isbn">
+                <span *ngIf="savingBookISBN === book.isbn" class="btn-spinner"></span>
+                {{ savingBookISBN === book.isbn ? 'Saving…' : 'Save Book Details' }}
+              </button>
+            </div>
+          </div>
+
+          <!-- SECTION 2: Branch Stock -->
+          <div class="section">
+            <h4 class="section-title">Branch Stock</h4>
+            <p class="section-hint">Set the number of copies at each branch. Changes are applied on save.</p>
+
+            <div *ngIf="branches.length === 0" class="no-branches">
+              No branches found.
+            </div>
+
+            <div class="stock-table">
+              <div class="stock-header">
+                <span>Branch</span>
+                <span>Current</span>
+                <span>New Count</span>
+              </div>
+              <div
+                *ngFor="let row of getStockRows(book.isbn)"
+                class="stock-row"
+                [class.changed]="row.newCount !== row.currentCount">
+                <span class="branch-name">{{ row.branchName }}</span>
+                <span class="current-count">{{ row.currentCount }}</span>
+                <div class="qty-control compact">
+                  <button type="button" class="qty-btn" (click)="decStock(row)">−</button>
+                  <input type="number" [(ngModel)]="row.newCount" min="0" />
+                  <button type="button" class="qty-btn" (click)="incStock(row)">+</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-actions">
+              <button
+                class="btn-save"
+                (click)="saveStock(book.isbn)"
+                [disabled]="savingStockISBN === book.isbn">
+                <span *ngIf="savingStockISBN === book.isbn" class="btn-spinner"></span>
+                {{ savingStockISBN === book.isbn ? 'Saving…' : 'Save Branch Stock' }}
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </ng-container>
+
+</div>
