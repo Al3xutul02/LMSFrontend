@@ -7,7 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BookDataService } from '../../services/data/book.data.service';
 import { LoanCreateDto } from '../../models/dtos/loan.dtos';
 import { AuthService } from '../../services/auth.service';
-import { env } from '../../../../environment';
+import { AssetService } from '../../services/asset.service';
 
 @Component({
   selector: 'reserve',
@@ -20,6 +20,7 @@ export class ReserveComponent implements OnInit {
   authService = inject(AuthService);
   loanService = inject(LoanDataService);
   bookService = inject(BookDataService);
+  assetService = inject(AssetService);
   route = inject(ActivatedRoute);
   @Output() closed = new EventEmitter<void>();
   
@@ -31,7 +32,7 @@ export class ReserveComponent implements OnInit {
   async ngOnInit() {
     this.book = history.state.book;
     const normalizedFileName = decodeURIComponent(this.book.imagePath).replace(/ /g, '_');
-    this.imagePath = `${env.imagePaths['books']}/${normalizedFileName}`;
+    this.imagePath = this.assetService.getImagePath('books', normalizedFileName);
 
     if (!this.book) {
       const isbn: number = Number(this.route.snapshot.paramMap.get('isbn')!);
@@ -39,7 +40,7 @@ export class ReserveComponent implements OnInit {
         next: (book) => {
           this.book = book;
           const normalizedFileName = decodeURIComponent(this.book.imagePath).replace(/ /g, '_');
-          this.imagePath = `${env.imagePaths['books']}/${normalizedFileName}`;
+          this.imagePath = this.assetService.getImagePath('books', normalizedFileName);
         }
       });
     }

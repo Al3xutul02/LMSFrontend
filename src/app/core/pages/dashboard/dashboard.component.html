@@ -1,3 +1,38 @@
-<div>
-    <h1>Empty dashboard page to be implemented</h1>
+<div class="dashboard-layout">
+  <!-- Left Sidebar Nav -->
+  <aside class="dash-sidebar">
+    <div class="sidebar-header">
+      <span class="sidebar-title">Admin</span>
+    </div>
+    <nav class="sidebar-nav">
+      <button
+        class="nav-item"
+        [class.active]="activePage === 'branches'"
+        (click)="setPage('branches')">
+        <span class="nav-label">Branches</span>
+      </button>
+      <button
+        class="nav-item"
+        [class.active]="activePage === 'users'"
+        (click)="setPage('users')">
+        <span class="nav-label">Users</span>
+      </button>
+    </nav>
+  </aside>
+ 
+  <!-- Main Content Area -->
+  <main class="dash-content">
+    @if (activePage === 'branches') {
+      <branches-page></branches-page>
+    }
+    @if (activePage === 'users') {
+      <div class="coming-soon">
+        <div class="coming-soon-inner">
+          <span class="cs-icon">🚧</span>
+          <h2>Users</h2>
+          <p>This section is coming soon.</p>
+        </div>
+      </div>
+    }
+  </main>
 </div>
