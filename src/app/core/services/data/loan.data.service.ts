@@ -34,4 +34,8 @@ export class LoanDataService extends DataService<LoanCreateDto, LoanReadDto, Loa
   activateReservation(id: number): Observable<any> {
     return this.http.delete(`${this.apiCallUrl}/delete?id=${id}`);
   }
+
+  getUserLoans(userId: number): Observable<LoanReadDto[]> {
+  return this.http.get<LoanReadDto[]>(`${this.apiCallUrl}/user-loans/${userId}`);
+}
 }

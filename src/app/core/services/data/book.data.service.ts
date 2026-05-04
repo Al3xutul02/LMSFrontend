@@ -31,4 +31,10 @@ export class BookDataService
     return this.http.get<BookReadDto[]>(
       `${this.apiCallUrl}/get-all-with-filters`, { params });
     }
+
+    getByGenres(genres: number[]): Observable<BookReadDto[]> {
+      let params = new HttpParams();
+      genres.forEach(g => params = params.append('genres', g.toString()));
+      return this.http.get<BookReadDto[]>(`${this.apiCallUrl}/get-by-genres`, { params });
+}
 }

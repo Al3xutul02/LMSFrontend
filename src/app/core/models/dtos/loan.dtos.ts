@@ -7,6 +7,7 @@ export interface LoanCreateDto extends Dto {
 }
 
 export interface LoanReadDto extends Dto {
+    title: any;
     id: number;
     loanerName: string;
     fineId?: number;

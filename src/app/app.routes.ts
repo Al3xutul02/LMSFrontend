@@ -12,6 +12,7 @@ import { OverdueUsersComponent } from './core/pages/overdue-users/overdue-users.
 import { AuthGuard } from './core/guards/auth.guard';
 import { UserRole } from './core/models/app.models';
 import { ReserveComponent } from './core/pages/reserve/reserve.component';
+import { ReaderSeeProfileComponent } from './core/pages/reader-see-profile/reader-see-profile.component';
 
 export const routes: Routes = [
     { path: 'login',     component: LoginComponent },
@@ -32,6 +33,7 @@ export const routes: Routes = [
             { path: 'overdue-users',    component: OverdueUsersComponent },
         ]
     },
+    { path: 'profile', component: ReaderSeeProfileComponent, canActivate: [AuthGuard] },
     { path: '',  redirectTo: 'login', pathMatch: 'full' },
     { path: '**', redirectTo: 'login' }
 ];
