@@ -1,11 +1,11 @@
 import { Component, inject } from "@angular/core";
 import { AuthService } from "../../../services/auth.service";
-import { RouterLink } from "@angular/router";
+import { RouterLink, RouterLinkActive } from "@angular/router";
  
 @Component({
   selector: 'nav-bar',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './nav-bar.component.html',
   styleUrl: './nav-bar.component.scss'
 })

@@ -1,26 +1,13 @@
-<div class="nav-wrapper">
-  <nav class="navbar">
-    <span class="navbar-brand">Library Management System</span>
-  </nav>
-
-  <div class="tab-bar">
-    <a class="tab" routerLink="/pending-loans" routerLinkActive="tab-active">
-      <span class="tab-icon">📋</span>
-      Pending Requests
-    </a>
-    <a class="tab" routerLink="/add-book" routerLinkActive="tab-active">
-      <span class="tab-icon">📖</span>
-      Add Book
-    </a>
-  </div>
-</div>
 <div class="nav-container">
     <nav class="navbar">
         <div class="navbar-brand">Library Management System</div>
         <ul class="navbar-menu">
-            <li><a routerLink="/home">Home</a></li>
+            <li><a routerLink="/home" routerLinkActive="active">Home</a></li>
             @if (isAdmin) {
-                <li><a routerLink="/dashboard">Dashboard</a></li>
+                <li><a routerLink="/dashboard" routerLinkActive="active">Dashboard</a></li>
+            }
+            @if (isLibrarian || isAdmin) {
+                <li><a routerLink="/librarian" routerLinkActive="active">Librarian Details</a></li>
             }
         </ul>
     </nav>
