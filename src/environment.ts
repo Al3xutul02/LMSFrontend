@@ -21,6 +21,6 @@ export const env: AppEnvironment = {
   imagePaths: {
     'users': 'assets/images/users',
     'books': 'assets/images/books',
-    'app': 'assets/images/apps'
+    'app': 'assets/images/app'
   }
 };
