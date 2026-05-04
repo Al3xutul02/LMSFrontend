@@ -13,4 +13,12 @@ export class UserDataService
   getUserProfile(id: number): Observable<UserReadDto> {
     return this.http.get<UserReadDto>(`${this.apiCallUrl}/my-profile/${id}`);
   }
+
+  updateName(id: number, newName: string): Observable<boolean> {
+  return this.http.put<boolean>(
+    `${this.apiCallUrl}/update-name/${id}`,
+    JSON.stringify(newName),
+    { headers: { 'Content-Type': 'application/json' } }
+  );
+}
 }

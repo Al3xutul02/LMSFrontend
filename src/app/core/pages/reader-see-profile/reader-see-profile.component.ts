@@ -2,6 +2,7 @@ import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from "@angular/common";
 import { forkJoin, of, Subscription, timer } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
+import { FormsModule } from '@angular/forms';
 
 import { UserDataService } from '../../../core/services/data/user.data.service';
 import { UserReadDto } from '../../../core/models/dtos/user.dtos';
@@ -24,7 +25,7 @@ export interface LoanBookEntry {
 @Component({
   selector: 'app-reader-see-profile',
   standalone: true,
-  imports: [CommonModule, BookDetailsComponent],
+  imports: [CommonModule, BookDetailsComponent, FormsModule],
   templateUrl: './reader-see-profile.component.html',
   styleUrls: ['./reader-see-profile.component.scss']
 })
@@ -40,6 +41,8 @@ export class ReaderSeeProfileComponent implements OnInit, OnDestroy {
   loanBookEntries: LoanBookEntry[] = [];
   recommendations: any[] = [];
   isFavorite: boolean = false;
+  isEditingName: boolean = false;
+  editedName: string = '';
 
   public hoveredBook: BookReadDto | null = null;
   popoverPos = { x: 0, y: 0 };
@@ -203,4 +206,30 @@ export class ReaderSeeProfileComponent implements OnInit, OnDestroy {
   navigateToCatalog(): void {
     // Adaugă logica de navigare
   }
+
+
+startEditName(): void {
+  this.isEditingName = true;
+  this.editedName = this.userProfile?.name ?? '';
+}
+
+cancelEditName(): void {
+  this.isEditingName = false;
+  this.editedName = '';
+}
+
+saveName(): void {
+  const userId = this.authService.getUserId();
+  if (!this.editedName.trim()) return;
+
+  this.userDataService.updateName(userId, this.editedName.trim()).subscribe({
+    next: () => {
+      if (this.userProfile) {
+        this.userProfile = { ...this.userProfile, name: this.editedName.trim() };
+      }
+      this.isEditingName = false;
+    },
+    error: (err) => console.error('Eroare:', err)
+  });
+}
 }

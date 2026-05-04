@@ -1,18 +1,40 @@
 <div class="profile-page">
   <aside class="sidebar">
-    <div class="user-card">
-      <div class="profile-photo-container">
-        <img src="assets/profile-placeholder.png" alt="Profile Photo" class="profile-photo">
-      </div>
+  <div class="user-card">
+    <div class="profile-photo-container">
+      <img src="assets/profile-placeholder.png" alt="Profile Photo" class="profile-photo">
+    </div>
+
+    <div class="name-display" *ngIf="!isEditingName">
       <h2 class="user-full-name">{{ userProfile?.name }}</h2>
-      <div class="borrowing-stats">
-        <div class="stat-item box-stat">
-          <span class="stat-label">Books to Return</span>
-          <span class="stat-number">{{ loanBookEntries.length }}</span>
-        </div>
+      <button class="btn-edit-name" (click)="startEditName()">
+        Edit Profile
+      </button>
+    </div>
+
+    <!--Make sure to implement change photo, and change password for edit profile section-->
+    <div class="name-edit" *ngIf="isEditingName">
+      <label>Name</label>
+      <input
+        class="name-input"
+        [(ngModel)]="editedName"
+        (keyup.enter)="saveName()"
+        (keyup.escape)="cancelEditName()"
+        placeholder="Enter new name...">
+      <div class="edit-actions">
+        <button class="btn-save" (click)="saveName()">✔ Save</button>
+        <button class="btn-cancel" (click)="cancelEditName()">✖ Cancel</button>
       </div>
     </div>
-  </aside>
+
+    <div class="borrowing-stats">
+      <div class="stat-item box-stat">
+        <span class="stat-label">Books to Return</span>
+        <span class="stat-number">{{ loanBookEntries.length }}</span>
+      </div>
+    </div>
+  </div>
+</aside>
 
   <main class="main-content">
     <section class="account-header">
@@ -27,28 +49,28 @@
         </button>
       </div>
 
-     <div class="return-list">
-  <div class="list-row" 
-       *ngFor="let entry of loanBookEntries"
-       (mouseenter)="onMouseEnter(entry.fullDetails)"
-       (mouseleave)="onMouseLeave()"
-       (mousemove)="onMouseMove($event)"> <div class="book-info">
-      <span class="book-title"><strong>{{ entry.title }}</strong></span>
-      <span class="book-author" *ngIf="entry.author"> by {{ entry.author }}</span>
-    </div>
+      <div class="return-list">
+        <div class="list-row"
+             *ngFor="let entry of loanBookEntries"
+             (mouseenter)="onMouseEnter(entry.fullDetails)"
+             (mouseleave)="onMouseLeave()"
+             (mousemove)="onMouseMove($event)">
+          <div class="book-info">
+            <span class="book-title"><strong>{{ entry.title }}</strong></span>
+            <span class="book-author" *ngIf="entry.author"> by {{ entry.author }}</span>
+          </div>
+          <span class="due-date" [class.overdue]="isOverdue(entry.dueDate)">
+            {{ entry.dueDate | date:'MMMM d, yyyy' }}
+          </span>
+        </div>
 
-    <span class="due-date" [class.overdue]="isOverdue(entry.dueDate)">
-      {{ entry.dueDate | date:'MMMM d, yyyy' }}
-    </span>
-  </div>
-
-  <div class="popover-tracking-container" 
-       *ngIf="hoveredBook"
-       [style.left.px]="popoverPos.x"
-       [style.top.px]="popoverPos.y">
-    <book-details [bookDto]="hoveredBook"></book-details>
-  </div>
-</div>
+        <div class="popover-tracking-container"
+             *ngIf="hoveredBook"
+             [style.left.px]="popoverPos.x"
+             [style.top.px]="popoverPos.y">
+          <book-details [bookDto]="hoveredBook"></book-details>
+        </div>
+      </div>
     </div>
 
     <div class="personalization-block">
