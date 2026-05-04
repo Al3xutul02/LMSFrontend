@@ -2,7 +2,7 @@
   <aside class="sidebar">
   <div class="user-card">
     <div class="profile-photo-container">
-      <img src="assets/profile-placeholder.png" alt="Profile Photo" class="profile-photo">
+      <img [src]="this.userProfilePath" alt="Profile Photo" class="profile-photo">
     </div>
 
     <div class="name-display" *ngIf="!isEditingName">
@@ -56,8 +56,8 @@
              (mouseleave)="onMouseLeave()"
              (mousemove)="onMouseMove($event)">
           <div class="book-info">
-            @if (book.imagePath != null && book.imagePath.trim() !== '') {
-          <img [src]="imagePath" alt="Book Cover" loading="lazy">
+            @if (entry.imagePath != null && entry.imagePath.trim() !== '') {
+          <img [src]="this.assetService.getImagePath('books', entry.imagePath)" alt="Book Cover" loading="lazy">
         }
             <span class="book-title"><strong>{{ entry.title }}</strong></span>
             <span class="book-author" *ngIf="entry.author"> by {{ entry.author }}</span>
@@ -80,7 +80,7 @@
       <h3>Borrow More Books</h3>
       <div class="recommendations-grid">
         <div class="rec-card" *ngFor="let book of recommendations">
-          <img [src]="book.coverUrl" alt="Cover" class="rec-cover">
+          <img [src]="this.assetService.getImagePath('books', book.imagePath)" alt="Cover" class="rec-cover">
           <div class="rec-details">
             <h4>{{ book.title }}</h4>
             <p>{{ book.author }}</p>

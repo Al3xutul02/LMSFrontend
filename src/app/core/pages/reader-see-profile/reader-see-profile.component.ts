@@ -21,6 +21,7 @@ export interface LoanBookEntry {
   fullDetails?: BookReadDto;
   isbn: number;
   genres: any[];
+  imagePath: string;
 }
 
 @Component({
@@ -41,12 +42,13 @@ export class ReaderSeeProfileComponent implements OnInit, OnDestroy {
   borrowedCount: number = 0;
   returnList: LoanReadDto[] = [];
   loanBookEntries: LoanBookEntry[] = [];
-  recommendations: any[] = [];
+  recommendations: BookReadDto[] = [];
   isFavorite: boolean = false;
   isEditingName: boolean = false;
   editedName: string = '';
   book!: BookReadDto;
   imagePath!: string;
+  userProfilePath!: string;
 
 
   public hoveredBook: BookReadDto | null = null;
@@ -106,6 +108,8 @@ export class ReaderSeeProfileComponent implements OnInit, OnDestroy {
         this.userProfile = data;
         this.loadBorrowingData(userId);
         // Nu apela loadRecommendations() aici — se apelează din loadBorrowingData
+        const normalizedFileName = decodeURIComponent(this.userProfile.imagePath).replace(/ /g, '_');
+        this.userProfilePath = this.assetService.getImagePath('users', normalizedFileName);
       },
       error: (err) => console.error('Eroare la încărcarea profilului:', err)
     });
@@ -158,12 +162,13 @@ export class ReaderSeeProfileComponent implements OnInit, OnDestroy {
                 author: book?.author ?? 'Autor necunoscut',
                 isbn: br.isbn,
                 genres: book?.genres ?? [],
-                fullDetails: book ?? undefined
+                fullDetails: book ?? undefined,
+                imagePath: book?.imagePath ?? ''
               } as LoanBookEntry))
             )
           )
         );
-
+        
         return entries$.length > 0 ? forkJoin(entries$) : of([]);
       })
     ).subscribe({
@@ -196,8 +201,6 @@ export class ReaderSeeProfileComponent implements OnInit, OnDestroy {
           .filter(b => !borrowedIsbns.has(b.isbn))
           .slice(0, 4);
         this.book = this.book;
-          const normalizedFileName = decodeURIComponent(this.book.imagePath).replace(/ /g, '_');
-          this.imagePath = this.assetService.getImagePath('books', normalizedFileName);
       },
       error: (err) => console.error('Eroare recomandări:', err)
     });
