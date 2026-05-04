@@ -1,4 +1,13 @@
-export const env = {
+export type ImageCategory = 'users' | 'books' | 'app';
+
+interface AppEnvironment {
+  production: boolean;
+  webApiUrl: string;
+  endpointMap: Record<string, string>;
+  imagePaths: Record<ImageCategory, string>;
+}
+
+export const env: AppEnvironment = {
   production: true,
   webApiUrl: 'https://localhost:7076',
   endpointMap: {
@@ -12,6 +21,6 @@ export const env = {
   imagePaths: {
     'users': 'assets/images/users',
     'books': 'assets/images/books',
-    'app': 'assets/images/app'
+    'app': 'assets/images/apps'
   }
-}
+};
