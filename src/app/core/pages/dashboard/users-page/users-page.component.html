@@ -97,18 +97,14 @@
                   <span class="detail-label">Role</span>
                   <span [class]="roleBadgeClass(user.role)">{{ roleLabel(user.role) }}</span>
                 </div>
-                @if (user.employeeId) {
-                  <div class="detail-item">
-                    <span class="detail-label">Employee ID</span>
-                    <span class="detail-value">{{ user.employeeId }}</span>
-                  </div>
-                }
-                @if (user.role === 'librarian') {
-                  <div class="detail-item">
-                    <span class="detail-label">Branch</span>
-                    <span class="detail-value">{{ getBranchName(user.branchId!) }}</span>
-                  </div>
-                }
+                <div class="detail-item">
+                  <span class="detail-label">Employee ID</span>
+                  <span class="detail-value">{{ user.employeeId ?? '—' }}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Branch</span>
+                  <span class="detail-value">{{ getBranchName(user.branchId) }}</span>
+                </div>
               </div>
 
               <!-- Actions -->
@@ -133,40 +129,68 @@
 
 <!-- ── User Modal ── -->
 @if (showModal) {
-  <div class="modal-overlay" (click)="closeModal()">
+  <div bodyPortal class="modal-overlay" (click)="closeModal()">
     <div class="modal-card" (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h2>{{ isEditMode ? 'Edit User' : 'New User' }}</h2>
         <button class="close-btn" (click)="closeModal()">×</button>
       </div>
       <div class="modal-body">
+
+        <!-- Name -->
         <div class="form-group">
           <label>Name</label>
           <input type="text" [(ngModel)]="form.name" placeholder="e.g. John Doe" />
         </div>
+
+        <!-- Email -->
         <div class="form-group">
           <label>Email</label>
           <input type="email" [(ngModel)]="form.email" placeholder="e.g. john@library.com" />
         </div>
+
+        <!-- Password -->
         <div class="form-group">
           <label>{{ isEditMode ? 'New Password (leave blank to keep)' : 'Password' }}</label>
           <input type="password" [(ngModel)]="form.password" placeholder="••••••••" />
         </div>
-        @if (!isEditMode) {
-          <div class="form-group">
-            <label>Role</label>
-            <div class="role-toggle">
-              @for (role of selectableRoles ; track role) {
-                <button
-                  class="toggle-btn"
-                  [class.active]="form.role === role"
-                  (click)="form.role = role">
-                  {{ roleLabel(role) }}
-                </button>
-              }
+
+        <!-- Role (always shown) -->
+        <div class="form-group">
+          <label>Role</label>
+          <div class="role-toggle">
+            @for (role of selectableRoles; track role) {
+              <button
+                class="toggle-btn"
+                [class.active]="form.role === role"
+                (click)="form.role = role; form.branchId = null; form.employeeId = ''">
+                {{ roleLabel(role) }}
+              </button>
+            }
+          </div>
+        </div>
+
+        <!-- Employee ID + Branch — only for librarian / administrator -->
+        @if (needsEmployeeFields()) {
+          <div class="form-row">
+            <div class="form-group">
+              <label>Employee ID</label>
+              <input type="number" [(ngModel)]="form.employeeId" placeholder="e.g. 1042" />
             </div>
+            @if (form.role === 'librarian') {
+              <div class="form-group">
+                <label>Branch</label>
+                <select [(ngModel)]="form.branchId">
+                  <option [ngValue]="null">— None —</option>
+                  @for (branch of branches; track branch.id) {
+                    <option [ngValue]="branch.id">{{ branch.name }}</option>
+                  }
+                </select>
+              </div>
+            }
           </div>
         }
+
         @if (modalError) {
           <p class="modal-error">{{ modalError }}</p>
         }

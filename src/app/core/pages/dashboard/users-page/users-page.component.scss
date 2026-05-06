@@ -464,3 +464,37 @@
   padding: 16px 24px 22px 24px;
   border-top: 1px solid var(--border-color);
 }
+/* ── Side-by-side form fields ── */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* ── Select ── */
+.form-group select {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1.5px solid var(--border-color);
+  background: var(--primary-bg-color);
+  color: var(--primary-text-color);
+  font-family: 'Figtree', sans-serif;
+  font-size: 0.9rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23999' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+
+  &:focus {
+    outline: none;
+    border-color: var(--secondary-bg-color);
+    box-shadow: 0 0 0 3px rgba(179, 106, 94, 0.1);
+  }
+
+  option { background: var(--card-bg); }
+}

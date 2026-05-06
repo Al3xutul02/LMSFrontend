@@ -6,11 +6,12 @@ import { BranchDataService } from "../../../services/data/branch.data.service";
 import { UserReadDto, UserCreateDto, UserUpdateDto } from "../../../models/dtos/user.dtos";
 import { BranchReadDto } from "../../../models/dtos/branch.dtos";
 import { UserRole } from "../../../models/app.models";
+import { BodyPortalDirective } from "../../../directives/body-portal.directive";
 
 @Component({
   selector: 'users-page',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, BodyPortalDirective],
   templateUrl: './users-page.component.html',
   styleUrls: ['./users-page.component.scss']
 })
@@ -36,7 +37,9 @@ export class UsersPageComponent implements OnInit {
     password: string;
     role: UserRole;
     imagePath: string;
-  } = { name: '', email: '', password: '', role: 'reader', imagePath: '' };
+    employeeId: string; // string for input binding, parsed on save
+    branchId: number | null;
+  } = { name: '', email: '', password: '', role: 'reader', imagePath: '', employeeId: '', branchId: null };
 
   // Delete confirm
   deleteConfirmId: number | null = null;
@@ -86,7 +89,7 @@ export class UsersPageComponent implements OnInit {
     this.deleteConfirmId = null;
   }
 
-  getBranchName(branchId?: number): string {
+  getBranchName(branchId: number | null): string {
     if (!branchId) return '—';
     return this.branches.find(b => b.id === branchId)?.name ?? '—';
   }
@@ -104,10 +107,15 @@ export class UsersPageComponent implements OnInit {
     return this.allUsers.filter(u => u.role === role).length;
   }
 
+  // Whether the current role needs branch/employee fields
+  needsEmployeeFields(): boolean {
+    return this.form.role === 'librarian' || this.form.role === 'administrator';
+  }
+
   // ── Add / Edit ──
   openAdd(): void {
     this.isEditMode = false;
-    this.form = { name: '', email: '', password: '', role: 'reader', imagePath: '' };
+    this.form = { name: '', email: '', password: '', role: 'reader', imagePath: '', employeeId: '', branchId: null };
     this.modalError = null;
     this.showModal = true;
   }
@@ -115,7 +123,16 @@ export class UsersPageComponent implements OnInit {
   openEdit(user: UserReadDto, event: Event): void {
     event.stopPropagation();
     this.isEditMode = true;
-    this.form = { id: user.id, name: user.name, email: user.email, password: '', role: user.role, imagePath: user.imagePath };
+    this.form = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      password: '',
+      role: user.role,
+      imagePath: user.imagePath,
+      employeeId: user.employeeId?.toString() ?? '',
+      branchId: user.branchId
+    };
     this.modalError = null;
     this.showModal = true;
   }
@@ -131,6 +148,17 @@ export class UsersPageComponent implements OnInit {
       this.modalError = 'Password is required for new users.';
       return;
     }
+
+    // Parse employeeId — empty string becomes null
+    const parsedEmployeeId = this.form.employeeId.trim()
+      ? parseInt(this.form.employeeId, 10)
+      : null;
+
+    if (this.form.employeeId.trim() && isNaN(parsedEmployeeId!)) {
+      this.modalError = 'Employee ID must be a number.';
+      return;
+    }
+
     this.saving = true;
     this.modalError = null;
 
@@ -139,8 +167,11 @@ export class UsersPageComponent implements OnInit {
         id: this.form.id!,
         name: this.form.name,
         email: this.form.email,
-        password: this.form.password,
-        imagePath: this.form.imagePath
+        password: this.form.password.trim() || null,
+        role: this.form.role,
+        imagePath: this.form.imagePath,
+        employeeId: parsedEmployeeId,
+        branchId: this.form.branchId
       };
       this.userService.updateItem(dto).subscribe({
         next: () => { this.saving = false; this.closeModal(); this.loadAll(); },
