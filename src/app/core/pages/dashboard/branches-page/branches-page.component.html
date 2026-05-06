@@ -123,7 +123,7 @@
  
 <!-- ── Branch Modal ── -->
 @if (showModal) {
-  <div class="modal-overlay" (click)="closeModal()">
+  <div bodyPortal class="modal-overlay" (click)="closeModal()">
     <div class="modal-card" (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h2>{{ isEditMode ? 'Edit Branch' : 'New Branch' }}</h2>
@@ -161,7 +161,7 @@
  
 <!-- ── Librarian Management Modal ── -->
 @if (showLibrarianModal && librarianModalBranch) {
-  <div class="modal-overlay" (click)="closeLibrarianModal()">
+  <div bodyPortal class="modal-overlay" (click)="closeLibrarianModal()">
     <div class="modal-card librarian-modal" (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h2>Manage Librarians</h2>

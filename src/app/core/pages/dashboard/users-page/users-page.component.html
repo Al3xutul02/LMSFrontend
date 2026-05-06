@@ -1,0 +1,206 @@
+<div class="users-page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="page-title">
+      <h1>Users</h1>
+      @if (!loading) {
+        <span class="branch-count">{{ allUsers.length }} total</span>
+      }
+    </div>
+    <button class="action-btn primary" (click)="openAdd()">+ Add User</button>
+  </div>
+
+  <!-- Loading -->
+  @if (loading) {
+    <div class="state-box">
+      <span class="state-icon">⏳</span>
+      <p>Loading users…</p>
+    </div>
+  }
+
+  <!-- Error -->
+  @if (error && !loading) {
+    <div class="state-box error">
+      <span class="state-icon">⚠️</span>
+      <p>{{ error }}</p>
+      <button class="action-btn outline" (click)="loadAll()">Retry</button>
+    </div>
+  }
+
+  @if (!loading && !error) {
+
+    <!-- Filters + Search -->
+    <div class="toolbar">
+      <div class="role-filters">
+        @for (role of roles; track role) {
+          <button
+            class="filter-btn"
+            [class.active]="activeFilter === role"
+            (click)="setFilter(role)">
+            {{ roleLabel(role) }}
+            <span class="filter-count">{{ countByRole(role) }}</span>
+          </button>
+        }
+      </div>
+      <input
+        class="search-input"
+        type="text"
+        [(ngModel)]="searchQuery"
+        placeholder="Search name or email…" />
+    </div>
+
+    <!-- Users List -->
+    <div class="users-list">
+      @if (filteredUsers.length === 0) {
+        <div class="state-box">
+          <span class="state-icon">👤</span>
+          <p>No users found.</p>
+        </div>
+      }
+
+      @for (user of filteredUsers; track user.id) {
+        <div class="user-card" [class.expanded]="expandedId === user.id">
+
+          <!-- Row -->
+          <div class="user-row" (click)="toggleExpand(user.id)">
+            <div class="row-left">
+              <span class="expand-chevron" [class.open]="expandedId === user.id">›</span>
+              <div class="user-avatar">{{ user.name.charAt(0).toUpperCase() }}</div>
+              <div class="user-meta">
+                <div class="user-name">{{ user.name }}</div>
+                <div class="user-email">{{ user.email }}</div>
+              </div>
+            </div>
+            <div class="row-right">
+              <span [class]="roleBadgeClass(user.role)">{{ roleLabel(user.role) }}</span>
+            </div>
+          </div>
+
+          <!-- Expanded Detail -->
+          @if (expandedId === user.id) {
+            <div class="user-detail">
+              <div class="detail-grid">
+                <div class="detail-item">
+                  <span class="detail-label">ID</span>
+                  <span class="detail-value">#{{ user.id }}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Name</span>
+                  <span class="detail-value">{{ user.name }}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Email</span>
+                  <span class="detail-value">{{ user.email }}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Role</span>
+                  <span [class]="roleBadgeClass(user.role)">{{ roleLabel(user.role) }}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Employee ID</span>
+                  <span class="detail-value">{{ user.employeeId ?? '—' }}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Branch</span>
+                  <span class="detail-value">{{ getBranchName(user.branchId) }}</span>
+                </div>
+              </div>
+
+              <!-- Actions -->
+              <div class="detail-actions">
+                @if (deleteConfirmId === user.id) {
+                  <span class="confirm-label">Delete this user?</span>
+                  <button class="action-btn danger" (click)="confirmDelete(user.id, $event)">Yes, Delete</button>
+                  <button class="action-btn outline" (click)="cancelDelete()">Cancel</button>
+                } @else {
+                  <button class="action-btn outline" (click)="openEdit(user, $event)">✏️ Edit</button>
+                  <button class="action-btn danger" (click)="requestDelete(user.id, $event)">🗑 Delete</button>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+
+</div>
+
+<!-- ── User Modal ── -->
+@if (showModal) {
+  <div bodyPortal class="modal-overlay" (click)="closeModal()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ isEditMode ? 'Edit User' : 'New User' }}</h2>
+        <button class="close-btn" (click)="closeModal()">×</button>
+      </div>
+      <div class="modal-body">
+
+        <!-- Name -->
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" [(ngModel)]="form.name" placeholder="e.g. John Doe" />
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" [(ngModel)]="form.email" placeholder="e.g. john@library.com" />
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <label>{{ isEditMode ? 'New Password (leave blank to keep)' : 'Password' }}</label>
+          <input type="password" [(ngModel)]="form.password" placeholder="••••••••" />
+        </div>
+
+        <!-- Role (always shown) -->
+        <div class="form-group">
+          <label>Role</label>
+          <div class="role-toggle">
+            @for (role of selectableRoles; track role) {
+              <button
+                class="toggle-btn"
+                [class.active]="form.role === role"
+                (click)="form.role = role; form.branchId = null; form.employeeId = ''">
+                {{ roleLabel(role) }}
+              </button>
+            }
+          </div>
+        </div>
+
+        <!-- Employee ID + Branch — only for librarian / administrator -->
+        @if (needsEmployeeFields()) {
+          <div class="form-row">
+            <div class="form-group">
+              <label>Employee ID</label>
+              <input type="number" [(ngModel)]="form.employeeId" placeholder="e.g. 1042" />
+            </div>
+            @if (form.role === 'librarian') {
+              <div class="form-group">
+                <label>Branch</label>
+                <select [(ngModel)]="form.branchId">
+                  <option [ngValue]="null">— None —</option>
+                  @for (branch of branches; track branch.id) {
+                    <option [ngValue]="branch.id">{{ branch.name }}</option>
+                  }
+                </select>
+              </div>
+            }
+          </div>
+        }
+
+        @if (modalError) {
+          <p class="modal-error">{{ modalError }}</p>
+        }
+      </div>
+      <div class="modal-footer">
+        <button class="action-btn outline" (click)="closeModal()" [disabled]="saving">Cancel</button>
+        <button class="action-btn primary" (click)="saveModal()" [disabled]="saving">
+          {{ saving ? 'Saving…' : (isEditMode ? 'Save Changes' : 'Create User') }}
+        </button>
+      </div>
+    </div>
+  </div>
+}
