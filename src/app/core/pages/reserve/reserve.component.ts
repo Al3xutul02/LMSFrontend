@@ -46,9 +46,6 @@ export class ReserveComponent implements OnInit {
     }
   }
 
-  // This also has logic to handle multiple book reservations, but the UI only allows one for now.
-  // This is to future-proof for the next feature with the user profile that also has a 'shopping cart'
-  // type of reservation list.
   confirmReservation() {
     if (!this.pickupDate) {
       alert('Te rugăm să selectezi o dată de ridicare!');
@@ -60,25 +57,11 @@ export class ReserveComponent implements OnInit {
       return;
     }
 
-    var reservationList: Map<number, number> = new Map<number, number>();
-
-    const stored = localStorage.getItem("reservationList");
-    reservationList = stored !== null
-                ? new Map<number, number>(JSON.parse(stored))
-                : new Map<number, number>();
-    reservationList.set(this.book.isbn, this.bookCount);
-    localStorage.setItem("reservationList", JSON.stringify(Array.from(reservationList.values())));
 
     const currentUserId = this.authService.getUserId();
-
-    const bookRelations: BookRelationDto[] = [];
-    reservationList.forEach((count, isbn) => {
-      bookRelations.push({ isbn, count });
-    });
-
     const loanDto: LoanCreateDto = {
       loanerName: this.authService.getUserName(),
-      bookRelations: bookRelations
+      bookRelations: [{ isbn: this.book.isbn, count: this.bookCount }]
     };
 
     this.loanService.reserve(loanDto, currentUserId, this.pickupDate).subscribe({
