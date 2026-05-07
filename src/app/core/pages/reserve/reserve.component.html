@@ -35,14 +35,14 @@
       </div>
 
       <div class="reserve-action-card">
-        <h2 class="reserve-title">Rezervă Cartea</h2>
-        <label style="font-size: 11px; font-weight: 800; color: var(--accent); display: block; margin-top: 20px;">NUMĂR DE EXEMPLARE</label>
+        <h2 class="reserve-title">Reserve Book</h2>
+        <label style="font-size: 11px; font-weight: 800; color: var(--accent); display: block; margin-top: 20px;">NO. OF COPIES</label>
         <input type="number" [(ngModel)]="bookCount" class="info-label">
-        <label style="font-size: 11px; font-weight: 800; color: var(--accent); display: block; margin-top: 20px;">DATA RIDICĂRII</label>
+        <label style="font-size: 11px; font-weight: 800; color: var(--accent); display: block; margin-top: 20px;">PICK-UP DATE</label>
         <input type="date" [(ngModel)]="pickupDate" class="info-label">
         
         <button class="confirm-btn" (click)="confirmReservation()">
-          Adaugă la Book Basket
+          Make Reservation
         </button>
       </div>
     </main>

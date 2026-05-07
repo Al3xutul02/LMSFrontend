@@ -21,8 +21,9 @@ export interface UserUpdateDto extends Dto {
     id: number;
     name: string;
     email: string;
-    password: string | null; // Allow null for cases where password is not being updated
+    password: string | null;
     imagePath: string;
+    role: UserRole;
     employeeId: number | null;
     branchId: number | null;
 }

@@ -1,6 +1,6 @@
 import { Component, inject } from "@angular/core";
 import { AuthService } from "../../../services/auth.service";
-import { RouterLink, RouterLinkActive } from "@angular/router";
+import { Router, RouterLink, RouterLinkActive } from "@angular/router";
  
 @Component({
   selector: 'nav-bar',
@@ -11,6 +11,7 @@ import { RouterLink, RouterLinkActive } from "@angular/router";
 })
 export class NavBarComponent {
   protected readonly authService: AuthService = inject(AuthService);
+  readonly router: Router = inject(Router);
 
   get isAdmin(): boolean {
     try {
@@ -28,5 +29,10 @@ export class NavBarComponent {
     } catch {
       return false;
     }
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

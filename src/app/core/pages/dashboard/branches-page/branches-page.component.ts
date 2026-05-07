@@ -5,11 +5,12 @@ import { BranchDataService } from "../../../services/data/branch.data.service";
 import { UserDataService } from "../../../services/data/user.data.service";
 import { BranchReadDto, BranchCreateDto, BranchUpdateDto } from "../../../models/dtos/branch.dtos";
 import { UserReadDto, UserUpdateDto } from "../../../models/dtos/user.dtos";
+import { BodyPortalDirective } from "../../../directives/body-portal.directive";
 
 @Component({
   selector: 'branches-page',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, BodyPortalDirective],
   templateUrl: './branches-page.component.html',
   styleUrls: ['./branches-page.component.scss']
 })
@@ -166,6 +167,7 @@ export class BranchesPageComponent implements OnInit {
       name: user.name,
       email: user.email,
       password: null, // Password is not updated here
+      role: user.role,
       imagePath: user.imagePath,
       employeeId: user.employeeId,
       branchId: this.librarianModalBranch.id
@@ -199,6 +201,7 @@ export class BranchesPageComponent implements OnInit {
       name: user.name,
       email: user.email,
       password: null,
+      role: user.role,
       imagePath: user.imagePath,
       employeeId: user.employeeId,
       branchId: null

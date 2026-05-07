@@ -101,3 +101,48 @@ input, select {
     box-shadow: 0 0 0 4px rgba(179, 106, 94, 0.1);
   }
 }
+/* ── Modal portal root ── */
+#modal-root {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9000;
+
+  .modal-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: all;
+    background: rgba(93, 64, 55, 0.35);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: modalFadeIn 0.18s ease;
+  }
+
+  .modal-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 20px 50px rgba(93, 64, 55, 0.18);
+    width: 100%;
+    max-width: 460px;
+    animation: modalPopIn 0.2s ease;
+    overflow: hidden;
+    pointer-events: all;
+  }
+
+  .librarian-modal {
+    max-width: 500px;
+  }
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes modalPopIn {
+  from { opacity: 0; transform: scale(0.95) translateY(10px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0); }
+}
