@@ -1,0 +1,52 @@
+<div class="management-page">
+  <header class="page-header">
+    <h1>Books to Return</h1>
+    <p class="subtitle">Overview of all active loans that need to be returned</p>
+  </header>
+
+  <div class="summary-card">
+    <div class="summary-content">
+      <span class="label">TOTAL ACTIVE LOANS</span>
+      <h2 class="count-number">{{ activeLoans.length }}</h2>
+    </div>
+    <div class="status-badge">In Circulation</div>
+  </div>
+
+  <div class="table-container">
+    <table class="lms-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>USER</th>
+          <th>ISSUE DATE</th>
+          <th>DUE DATE</th>
+          <th>BOOKS</th>
+          <th>ACTION</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let loan of activeLoans" class="list-row">
+          <td>#{{ loan.id }}</td>
+          <td>
+            <div class="user-info">
+              <span class="user-initials">{{ loan.loanerName?.[0] }}</span>
+              <span class="user-name">{{ loan.loanerName|| 'N/A' }}</span>
+            </div>
+          </td>
+          <td>{{ loan.issueDate | date:'MMM d, yyyy' }}</td>
+          <td>{{ loan.dueDate | date:'MMM d, yyyy' }}</td>
+          <td>
+            <span class="book-count-badge">
+              {{ loan.bookRelations?.length }} {{ loan.bookRelations?.length === 1 ? 'book' : 'books' }}
+            </span>
+          </td>
+          <td>
+            <button class="btn-mark-returned" (click)="markAsReturned(loan.id)">
+              Mark Returned
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
