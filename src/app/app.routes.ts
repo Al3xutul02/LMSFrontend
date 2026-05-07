@@ -13,6 +13,7 @@ import { AuthGuard } from './core/guards/auth.guard';
 import { UserRole } from './core/models/app.models';
 import { ReserveComponent } from './core/pages/reserve/reserve.component';
 import { ReaderSeeProfileComponent } from './core/pages/reader-see-profile/reader-see-profile.component';
+import { BooksToReturnComponent } from './core/pages/books-to-return/books-to-return.component';
 
 export const routes: Routes = [
     { path: 'login',     component: LoginComponent },
@@ -31,6 +32,7 @@ export const routes: Routes = [
             { path: 'update-inventory', component: UpdateInventoryComponent },
             { path: 'manage-returns',   component: ManageReturnsComponent },
             { path: 'overdue-users',    component: OverdueUsersComponent },
+            { path: 'books-to-return',  component: BooksToReturnComponent }
         ]
     },
     { path: 'profile', component: ReaderSeeProfileComponent, canActivate: [AuthGuard] },
