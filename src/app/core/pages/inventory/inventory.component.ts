@@ -1,7 +1,8 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { BookDataService } from '../../services/data/book.data.service';
+import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-inventory',
@@ -10,12 +11,25 @@ import { BookDataService } from '../../services/data/book.data.service';
   templateUrl: './inventory.component.html',
   styleUrls: ['./inventory.component.css']
 })
-export class InventoryComponent implements OnInit {
+export class InventoryComponent implements OnInit, OnDestroy {
   private bookService = inject(BookDataService);
   totalBooks = 0; booksAvailable = 0; loading = true;
   displayTotal = 0; displayAvailable = 0;
+  private refreshSubscription?: Subscription;
 
   ngOnInit(): void {
+    this.loadStats();
+    // Auto-refresh every 5 seconds
+    this.refreshSubscription = interval(5000).subscribe(() => {
+      this.loadStats();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.refreshSubscription?.unsubscribe();
+  }
+
+  private loadStats(): void {
     this.bookService.getStats().subscribe({
       next: (data) => {
         this.totalBooks = data.totalBooks;
